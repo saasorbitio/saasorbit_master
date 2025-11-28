@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -35,11 +36,40 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      // Call backend logout endpoint (optional but good practice)
+      if (token) {
+        await axios.post(
+          "/api/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Clear local storage and state
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setUser(null);
+      setIsAuthenticated(false);
+
+      toast.success("Logged out successfully");
+    } catch (error) {
+      // Even if backend call fails, still logout locally
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setUser(null);
+      setIsAuthenticated(false);
+
+      console.error("Logout error:", error);
+      toast.info("Logged out");
+    }
   };
 
   return (

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useVendorForm } from "../../context/VendorFormContext";
 import StepRole from "./StepRole";
+import StepRegister from "./StepRegister";
+import StepOTP from "./StepOTP";
 import StepCompany from "./StepCompany";
 import StepContact from "./StepContact";
 import StepSocial from "./StepSocial";
@@ -60,17 +62,19 @@ export default function VendorRegister() {
   return (
     <div className="bg-white w-full max-w-[600px] rounded-[40px] px-10 py-12 shadow-xl">
       {step === 0 && <StepRole next={next} />}
-      {step === 1 && <StepCompany next={next} back={back} />}
-      {step === 2 && <StepContact next={next} back={back} />}
-      {step === 3 && <StepSocial next={next} back={back} />}
-      {step === 4 && (
+      {step === 1 && <StepRegister next={next} back={back} />}
+      {step === 2 && <StepOTP next={next} back={back} />}
+      {step === 3 && <StepCompany next={next} back={back} />}
+      {step === 4 && <StepContact next={next} back={back} />}
+      {step === 5 && <StepSocial next={next} back={back} />}
+      {step === 6 && (
         <StepTerms
           back={back}
           onSubmit={handleFinalSubmit}
           isSubmitting={isSubmitting}
         />
       )}
-      {step === 5 && <StepSuccess />}
+      {step === 7 && <StepSuccess />}
     </div>
   );
 }

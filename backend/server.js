@@ -1,8 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const connectDB = require("./config/db");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import connectDB from "./config/db.js";
+import aiRoutes from "./routes/ai.js";
+import authRoutes from "./routes/authRoutes.js";
+import vendorRoutes from "./routes/vendorRoutes.js";
+
+dotenv.config();
 
 const app = express();
 connectDB();
@@ -24,11 +29,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-const authRoutes = require("./routes/authRoutes");
-const vendorRoutes = require("./routes/vendorRoutes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/vendor", vendorRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");
