@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   registerVendor,
   getAllVendors,
   getVendorById,
-} = require("../controllers/vendorController");
+} from "../controllers/vendorController.js";
+
+const router = express.Router();
 
 router.post("/register", registerVendor);
 router.get("/all", getAllVendors);
 router.get("/:id", getVendorById);
 
-module.exports = router;
+export default router;

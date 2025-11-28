@@ -6,11 +6,47 @@ export default function Home() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState([
+    { role: "bot", text: "Hi! Ask about software, products, or services." },
+  ]);
+
+  // Derive display name and initial dynamically from authenticated user
+  const displayName = user?.name || user?.companyName || "Your Company";
+  const displayInitial = displayName?.charAt(0)?.toUpperCase() || "";
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
+  // Placeholder send function; later will integrate with backend API
+const sendMessage = async (message) => {
+  if (!message.trim()) return;
+
+  const userMsg = { role: "user", text: message };
+  setChatMessages(prev => [...prev, userMsg]);
+  setChatInput("");
+
+  try {
+    const response = await fetch("http://localhost:5001/api/ai/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        userId: user?.id || user?.email,
+      }),
+    });
+
+    const data = await response.json();
+    setChatMessages(prev => [...prev, { role: "bot", text: data.reply }]);
+
+  } catch (error) {
+    setChatMessages(prev => [...prev, { role: "bot", text: "⚠ Error occurred." }]);
+  }
+};
+
+
 
   const products = [
     {
@@ -90,34 +126,96 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6">
           {/* Left Column - Main Content */}
           <div className="space-y-6">
-            {/* Welcome Banner */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Greetings for the Day!
-              </h1>
-              <p className="text-gray-600">
-                How may i help you in your Saas journey
-              </p>
+            {/* Chat Bot Main Card (per screenshot) */}
+            <div className="relative bg-white rounded-3xl p-8 shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Greetings for the Day!
+                </h2>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <button className="hover:text-gray-900">🔍</button>
+                  <button className="hover:text-gray-900">⚙️</button>
+                </div>
+              </div>
 
-              <div className="grid grid-cols-3 gap-4 mt-6">
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Best Products</p>
+              {/* Suggestions row like chips */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                  <p className="text-sm text-gray-600 mb-1">Best Productive</p>
                   <h3 className="font-semibold text-gray-900">
                     SaaS Products in India
                   </h3>
                 </div>
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Case Studies</p>
+                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                  <p className="text-sm text-gray-600 mb-1">Latest news</p>
                   <h3 className="font-semibold text-gray-900">
-                    about the SaaS Industry world wide
+                    about the SaaS industry world wide
                   </h3>
                 </div>
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">SaaS Provider</p>
+                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                  <p className="text-sm text-gray-600 mb-1">SaaS Service</p>
                   <h3 className="font-semibold text-gray-900">
-                    Provider for SaaS application
+                    Provider for abc application
                   </h3>
                 </div>
+              </div>
+
+              {/* Conversation area */}
+              <div className="space-y-3 min-h-[220px] bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-200">
+                {chatMessages.map((m, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${
+                      m.role === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`rounded-2xl px-4 py-2 text-sm shadow-sm ${
+                        m.role === "user"
+                          ? "bg-blue-600 text-white rounded-br-sm"
+                          : "bg-white text-gray-800 border border-gray-200 rounded-bl-sm"
+                      }`}
+                    >
+                      {m.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Input bar centered with circular send button */}
+              <div className="relative mt-6">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") sendMessage(chatInput);
+                  }}
+                  placeholder="Ask about software..."
+                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  onClick={() => sendMessage(chatInput)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-white shadow"
+                >
+                  ↑
+                </button>
+              </div>
+
+              {/* Optional quick actions row */}
+              <div className="flex gap-3 mt-3">
+                <button
+                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-xs"
+                  onClick={() => sendMessage("Best SaaS Products in India")}
+                >
+                  Image
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-xs"
+                  onClick={() => sendMessage("Attachment example")}
+                >
+                  Attachment
+                </button>
               </div>
             </div>
 
@@ -126,11 +224,13 @@ export default function Home() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">H</span>
+                    <span className="text-white font-bold text-xl">
+                      {displayInitial}
+                    </span>
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
-                      HashiCorp
+                      {displayName}
                     </h2>
                     <p className="text-gray-600">Do cloud right</p>
                   </div>
@@ -255,17 +355,21 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column - Chat/Activity */}
+          {/* Right Column - Activity */}
           <div className="space-y-6">
             {/* User Profile Card */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">H</span>
+                    <span className="text-white font-bold">
+                      {displayInitial}
+                    </span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">HashiCorp</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      {displayName}
+                    </h3>
                     <div className="flex items-center gap-2 text-xs text-gray-600">
                       <span className="flex items-center gap-1">
                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
@@ -330,39 +434,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Chat/Message Section */}
-            <div className="bg-white rounded-2xl p-4 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-900">Messages</h3>
-                <div className="flex items-center gap-2">
-                  <button className="text-gray-600 hover:text-gray-900">
-                    🔍
-                  </button>
-                  <div className="relative">
-                    <button className="text-gray-600 hover:text-gray-900">
-                      🔔
-                    </button>
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center">
-                      3
-                    </span>
-                  </div>
-                  <button className="text-gray-600 hover:text-gray-900">
-                    🛒
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Ask about software..."
-                  className="w-full px-4 py-2 bg-gray-50 border-0 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white">
-                  →
-                </button>
-              </div>
-            </div>
+            {/* Removed secondary chat; main chat now on the left */}
           </div>
         </div>
       </div>

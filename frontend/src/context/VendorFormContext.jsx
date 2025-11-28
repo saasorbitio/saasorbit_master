@@ -13,8 +13,9 @@ export const useVendorForm = () => {
 export const VendorFormProvider = ({ children }) => {
   const [formData, setFormData] = useState({
     role: "Vendor",
-    companyName: "",
     email: "",
+    password: "",
+    companyName: "",
     landline: "",
     fax: "",
     gst: "",
@@ -47,8 +48,9 @@ export const VendorFormProvider = ({ children }) => {
   const resetForm = () => {
     setFormData({
       role: "Vendor",
-      companyName: "",
       email: "",
+      password: "",
+      companyName: "",
       landline: "",
       fax: "",
       gst: "",

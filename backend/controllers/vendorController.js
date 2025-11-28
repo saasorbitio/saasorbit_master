@@ -1,13 +1,24 @@
 // backend/controllers/vendorController.js
-const Vendor = require("../models/Vendor");
+import Vendor from "../models/Vendor.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, email: user.email, role: user.role },
+    process.env.JWT_SECRET || "your-secret-key",
+    { expiresIn: "7d" }
+  );
+};
 
 // POST /api/vendor/register
-exports.registerVendor = async (req, res) => {
+export const registerVendor = async (req, res) => {
   try {
     const {
       role,
-      companyName,
       email,
+      password,
+      companyName,
       landline,
       fax,
       gst,
@@ -24,9 +35,14 @@ exports.registerVendor = async (req, res) => {
     } = req.body;
 
     // Validate required fields
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
     if (
       !companyName ||
-      !email ||
       !gst ||
       !address1 ||
       !city ||
@@ -53,11 +69,16 @@ exports.registerVendor = async (req, res) => {
         .json({ message: "Vendor with this email already exists" });
     }
 
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // Create new vendor
     const vendor = await Vendor.create({
       role: role || "Vendor",
-      companyName,
       email,
+      password: hashedPassword,
+      companyName,
       landline,
       fax,
       gst,
@@ -74,9 +95,19 @@ exports.registerVendor = async (req, res) => {
       status: "pending",
     });
 
+    // Generate token
+    const token = generateToken(vendor);
+
     res.status(201).json({
       success: true,
       message: "Vendor registered successfully",
+      token,
+      user: {
+        id: vendor._id,
+        email: vendor.email,
+        name: vendor.companyName,
+        role: vendor.role,
+      },
       vendor: {
         id: vendor._id,
         companyName: vendor.companyName,
@@ -91,7 +122,7 @@ exports.registerVendor = async (req, res) => {
 };
 
 // GET /api/vendor/all
-exports.getAllVendors = async (req, res) => {
+export const getAllVendors = async (req, res) => {
   try {
     const vendors = await Vendor.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, vendors });
@@ -102,7 +133,7 @@ exports.getAllVendors = async (req, res) => {
 };
 
 // GET /api/vendor/:id
-exports.getVendorById = async (req, res) => {
+export const getVendorById = async (req, res) => {
   try {
     const vendor = await Vendor.findById(req.params.id);
     if (!vendor) {

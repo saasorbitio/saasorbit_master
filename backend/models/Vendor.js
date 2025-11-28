@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const vendorSchema = new mongoose.Schema(
   {
@@ -7,14 +7,18 @@ const vendorSchema = new mongoose.Schema(
       enum: ["User", "Vendor", "Media"],
       default: "Vendor",
     },
-    companyName: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
       unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    companyName: {
+      type: String,
+      required: true,
     },
     landline: String,
     fax: String,
@@ -59,4 +63,4 @@ const vendorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Vendor", vendorSchema);
+export default mongoose.model("Vendor", vendorSchema);

@@ -7,9 +7,9 @@ export default function StepSocial({ next, back }) {
   return (
     <div className="w-full">
       {/* Vendor Badge */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-6">
         <span className="px-6 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-          Vendor
+          {formData.role || "Vendor"}
         </span>
       </div>
 
@@ -67,43 +67,20 @@ export default function StepSocial({ next, back }) {
           <div className="flex gap-4 mt-6">
             <button
               type="button"
-              onClick={back}
-              className="flex items-center justify-center gap-2 px-8 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+              onClick={() => {
+                // Skip - just go to next step without saving
+                next();
+              }}
+              className="flex-1 px-8 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back
+              Skip
             </button>
 
             <button
               type="submit"
-              className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+              className="flex-1 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
             >
-              Next
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              Proceed
             </button>
           </div>
         </Form>
