@@ -15,11 +15,11 @@ export default function LoginCard() {
   });
 
   return (
-    <div className="bg-white w-full max-w-[600px] rounded-[40px] px-10 py-12 shadow-xl">
+    <div className="bg-white w-full max-w-[600px] rounded-[100px] px-10 py-8 shadow-xl">
       {/* Header */}
       <div className="text-center mb-10">
-        <p className="text-lg text-gray-700 mb-2">Welcome to</p>
-        <h1 className="text-4xl font-semibold text-gray-900">
+        <p className="text-lg text-gray-700 mb-1">Welcome to</p>
+        <h1 className="text-2xl font-semibold text-gray-900">
           Socio-SaaS Network
         </h1>
       </div>
@@ -49,7 +49,7 @@ export default function LoginCard() {
           <Form className="flex flex-col gap-6">
             {/* Email Field */}
             <div>
-              <label className="block text-base font-medium text-gray-900 mb-3">
+              <label className="block text-base font-medium text-gray-900 mb-2">
                 Register Email ID
               </label>
               <Field
@@ -67,7 +67,7 @@ export default function LoginCard() {
 
             {/* Password Field */}
             <div>
-              <label className="block text-base font-medium text-gray-900 mb-3">
+              <label className="block text-base font-medium text-gray-900 mb-2">
                 Password
               </label>
               <Field
@@ -81,7 +81,7 @@ export default function LoginCard() {
                 component="p"
                 className="text-red-500 text-sm mt-2 ml-4"
               />
-              <p className="text-right text-sm text-gray-700 mt-3 mr-2">
+              <p className="text-right font-semibold text-sm text-gray-700 mt-3 mr-2">
                 Forgot User ID/Password?
               </p>
             </div>
@@ -90,7 +90,7 @@ export default function LoginCard() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-4 rounded-full mt-4 transition-colors disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-3 rounded-full mt-3 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? "Processing..." : "Log In"}
             </button>
@@ -99,7 +99,7 @@ export default function LoginCard() {
       </Formik>
 
       {/* Divider */}
-      <div className="flex items-center gap-4 my-8">
+      <div className="flex items-center gap-2 my-8">
         <div className="flex-1 h-px bg-gray-300"></div>
         <span className="text-gray-600 text-sm font-medium">
           Or Log in with
@@ -108,8 +108,8 @@ export default function LoginCard() {
       </div>
 
       {/* Social Login Buttons */}
-      <div className="flex justify-center gap-4 mb-8">
-        <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+      <div className="flex justify-center gap-2 mb-8">
+        <button className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
@@ -131,18 +131,18 @@ export default function LoginCard() {
           <span className="font-medium text-gray-700">Google</span>
         </button>
 
-        <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+        <button className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#0078D4">
             <path d="M23.5 10.5h-11v-11h11v11zm-12 0h-11v-11h11v11zm0 1v11h-11v-11h11zm1 0h11v11h-11v-11z" />
           </svg>
           <span className="font-medium text-gray-700">Outlook</span>
         </button>
 
-        <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+        <button className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#0A66C2">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
           </svg>
-          <span className="font-medium text-gray-700">LinkdIn</span>
+          <span className="font-medium text-gray-700">LinkedIn</span>
         </button>
       </div>
 

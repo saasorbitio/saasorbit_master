@@ -10,7 +10,7 @@ export default function Header() {
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
-        <button className="px-6 py-3 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+        <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
           Contact Us
         </button>
         <div className="flex items-center gap-2">

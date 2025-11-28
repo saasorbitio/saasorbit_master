@@ -2,6 +2,7 @@ import HeroSection from "./components/HeroSection";
 import LoginCard from "./components/LoginCard";
 import Header from "./components/Header";
 import Sections from "./components/Sections";
+import Footer from "./components/Footer"; // import Footer
 import VendorRegister from "./pages/vendor/VendorRegister";
 import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -81,6 +82,7 @@ export default function App() {
         </VendorFormProvider>
       </AuthProvider>
       <ToastContainer position="top-center" theme="light" />
+      <Footer /> {/* add Footer at the bottom */}
     </>
   );
 }
