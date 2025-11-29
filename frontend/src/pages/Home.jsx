@@ -1,6 +1,11 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import logo from "../assets/SaasOrbit_logo 1.svg";
+import wordLogo from "../assets/word.svg"; // added import for Microsoft Word SVG
+import canvaLogo from "../assets/canva.svg";
+import LightroomLogo from "../assets/Lightroom.svg";
+import PowerPointLogo from "../assets/PowerPoint.svg";
 
 export default function Home() {
   const { user, logout } = useAuth();
@@ -21,67 +26,119 @@ export default function Home() {
   };
 
   // Placeholder send function; later will integrate with backend API
-const sendMessage = async (message) => {
-  if (!message.trim()) return;
+  const sendMessage = async (message) => {
+    if (!message.trim()) return;
 
-  const userMsg = { role: "user", text: message };
-  setChatMessages(prev => [...prev, userMsg]);
-  setChatInput("");
+    const userMsg = { role: "user", text: message };
+    setChatMessages((prev) => [...prev, userMsg]);
+    setChatInput("");
 
-  try {
-    const response = await fetch("http://localhost:5001/api/ai/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message,
-        userId: user?.id || user?.email,
-      }),
-    });
+    try {
+      const response = await fetch("http://localhost:5001/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message,
+          userId: user?.id || user?.email,
+        }),
+      });
 
-    const data = await response.json();
-    setChatMessages(prev => [...prev, { role: "bot", text: data.reply }]);
-
-  } catch (error) {
-    setChatMessages(prev => [...prev, { role: "bot", text: "⚠ Error occurred." }]);
-  }
-};
-
-
+      const data = await response.json();
+      setChatMessages((prev) => [...prev, { role: "bot", text: data.reply }]);
+    } catch (error) {
+      setChatMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "⚠ Error occurred.", error },
+      ]);
+    }
+  };
 
   const products = [
     {
       name: "Microsoft Word",
-      category: "Productivity",
-      icon: "📊",
-      color: "bg-green-500",
+      subtitle: "Productivity",
       rating: 4.2,
+      icon: wordLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
     },
     {
       name: "Canva",
-      category: "AI Video & Photo Editor",
-      icon: "🎨",
-      color: "bg-gradient-to-br from-purple-500 to-blue-500",
+      subtitle: "AI Video & Photo Editor",
       rating: 4.2,
+      icon: canvaLogo, // use imported svg
+      isImage: true,
+
+      bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
     },
     {
       name: "Adobe Lightroom",
-      category: "Photo Editor Tool",
-      icon: "Lr",
-      color: "bg-blue-900",
+      subtitle: "Photo Editor Tool",
       rating: 4.2,
+      icon: LightroomLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-blue-900",
     },
     {
       name: "Microsoft PowerPoint",
-      category: "Presentation Tool",
-      icon: "📊",
-      color: "bg-gradient-to-br from-orange-400 to-red-500",
+      subtitle: "Presentation Tool",
       rating: 4.2,
+      icon: PowerPointLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
+    },
+    {
+      name: "Microsoft Word",
+      subtitle: "Productivity",
+      rating: 4.2,
+      icon: wordLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
+    {
+      name: "Canva",
+      subtitle: "AI Video & Photo Editor",
+      rating: 4.2,
+      icon: canvaLogo, // use imported svg
+      isImage: true,
+
+      bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
+    },
+    {
+      name: "Adobe Lightroom",
+      subtitle: "Photo Editor Tool",
+      rating: 4.2,
+      icon: LightroomLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-blue-900",
+    },
+    {
+      name: "Microsoft PowerPoint",
+      subtitle: "Presentation Tool",
+      rating: 4.2,
+      icon: PowerPointLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
     },
   ];
 
   const posts = [
     {
       user: "Random Jennifer",
+      content: "Best software for team",
+      tag: "#time log at saas",
+      image: "code-image",
+      stats: { views: "22k", comments: "221k", shares: "221k" },
+    },
+    {
+      user: "David Thomson",
+      content: "Best software for team",
+      tag: "#time log at saas",
+      image: "code-image",
+      stats: { views: "22k", comments: "221k", shares: "221k" },
+    },
+    {
+      user: "Jack  Williams",
       content: "Best software for team",
       tag: "#time log at saas",
       image: "code-image",
@@ -95,26 +152,24 @@ const sendMessage = async (message) => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="text-2xl font-bold">
-              <span className="text-blue-600">saas</span>
-              <span className="text-orange-500">ø</span>
-              <span className="text-blue-600">rbit</span>
-            </div>
-            <span className="text-xs text-gray-600">Describe Security</span>
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <img src={logo} alt="SaasOrbit Logo" className="h-12" />
           </div>
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
               Contact Us
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-700">Ind</span>
+              <span className="text-sm text-gray-700 font-medium">Ind</span>
               <img
                 src="https://flagcdn.com/w40/in.png"
                 alt="India"
-                className="w-6 h-4 rounded"
+                className="w-7 h-7 rounded-3xl shadow-sm"
               />
             </div>
           </div>
@@ -221,8 +276,8 @@ const sendMessage = async (message) => {
 
             {/* Company Profile Card */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between mb-6 ">
+                <div className="flex items-center gap-4 ">
                   <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-xl">
                       {displayInitial}
@@ -235,124 +290,161 @@ const sendMessage = async (message) => {
                     <p className="text-gray-600">Do cloud right</p>
                   </div>
                 </div>
-                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <button className="px-8 py-2 text-[#5A5A5A]  bg-[#FAFAFA] rounded-2xl">
                   Edit
                 </button>
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 border-gray-200 ">
                 <img
                   src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=300&fit=crop"
                   alt="Company"
                   className="w-full h-48 object-cover rounded-xl"
                 />
               </div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <div className="flex  items-start justify-between gap-4 mb-4">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 bg-gray-900 rounded-md flex items-center justify-center overflow-hidden">
+                    <span className="text-white font-bold text-lg">
+                      {displayInitial}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 truncate">
+                      {displayName}
+                    </h2>
+                    <p className="text-gray-600 text-sm mt-1">Do cloud right</p>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4 border-gray-200 ">
+                    Software Development | San Francisco, California. 301K
+                    followers | 1K-5K employees
+                  </p>
+                </div>
+              </div>
+            </div>
 
-              <p className="text-sm text-gray-600 mb-4">
-                Software Development | San Francisco, California. 301K followers
-                | 1K-5K employees
-              </p>
-
-              {/* Tabs */}
-              <div className="flex gap-2 border-b border-gray-200 mb-6">
+            {/* Tabs */}
+            <div className="flex items-center justify-between   mb-6">
+              <div className="flex gap-2 items-center">
                 <button
                   onClick={() => setActiveTab("products")}
-                  className={`px-6 py-3 font-medium transition-colors ${
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "products"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-[#E1F5FF] text-[#00ABFB] "
+                      : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
                   Products
                 </button>
+
                 <button
                   onClick={() => setActiveTab("posts")}
-                  className={`px-6 py-3 font-medium transition-colors ${
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "posts"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-[#E1F5FF] text-[#00ABFB] "
+                      : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
                   Posts
                 </button>
+
                 <button
                   onClick={() => setActiveTab("services")}
-                  className={`px-6 py-3 font-medium transition-colors ${
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "services"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-[#E1F5FF] text-[#00ABFB] "
+                      : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
                   Services
                 </button>
+
                 <button
                   onClick={() => setActiveTab("queries")}
-                  className={`px-6 py-3 font-medium transition-colors ${
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "queries"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-[#E1F5FF] text-[#00ABFB] "
+                      : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
                   Queries
                 </button>
               </div>
 
-              {/* Search and Filter */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex-1 max-w-md">
-                  <input
-                    type="text"
-                    placeholder="Search for Product/Post/Service"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-                    Sort by <span>▼</span>
-                  </button>
-                  <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-                    Filter <span>▼</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Products Grid */}
-              {activeTab === "products" && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {products.map((product, index) => (
-                    <div
-                      key={index}
-                      className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
-                    >
-                      <div
-                        className={`${product.color} w-16 h-16 rounded-xl flex items-center justify-center text-white text-2xl font-bold mb-3`}
-                      >
-                        {product.icon}
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-xs text-gray-600 mb-2">
-                        {product.category}
-                      </p>
-                      <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium">
-                          {product.rating}
-                        </span>
-                        <span className="text-yellow-500">★</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Add Product Button */}
-              <div className="flex justify-center mt-6">
-                <button className="px-8 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+              <div className="flex-shrink-0">
+                <button className="px-10 py-2 h-10 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm">
                   + Add
                 </button>
               </div>
             </div>
+
+            {/* Search and Filter */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex-1 max-w-xl ">
+                <input
+                  type="text"
+                  placeholder="Search for Product/Post/Service"
+                  className="w-full text-gray-550 px-4 py-2 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex items-center gap-2 shadow bg-white rounded-full px-5 py-2">
+                <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded">
+                  Sort by <span>▼</span>
+                </button>
+                <div className="w-px h-6 bg-gray-300"></div>{" "}
+                {/* Vertical separator */}
+                <button className="flex items-center gap-1 text-gray-700  px-2 py-1 rounded">
+                  Filter <span>▼</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Products Grid */}
+
+            {activeTab === "products" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-sm">
+                {products.map((app, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-3xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+                  >
+                    {/* colored rounded tile for app icon (matches screenshot) */}
+                    <div
+                      className={` w-12 h-12 rounded-3xl flex items-center justify-center mb-1`}
+                      style={{ minWidth: 96, minHeight: 96 }}
+                    >
+                      {app.isImage ? (
+                        <img
+                          src={app.icon}
+                          alt={app.name}
+                          className="w-20 h-20 object-cover"
+                          // style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.12))" }}
+                        />
+                      ) : (
+                        app.icon
+                      )}
+                    </div>
+
+                    <h3 className="font-semibold text-sm text-gray-900 mt-1">
+                      {app.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-1 mb-1">
+                      {app.subtitle}
+                    </p>
+
+                    {/* centered rating */}
+                    <div className="mt-auto text-center">
+                      <span className="text-sm font-semibold">
+                        {app.rating}
+                      </span>
+                      <span className="text-yellow-500 text-sm ml-1">★</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right Column - Activity */}
@@ -363,7 +455,7 @@ const sendMessage = async (message) => {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">
-                      {displayInitial}
+                      {String(displayInitial).charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <div>

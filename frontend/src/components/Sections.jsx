@@ -153,7 +153,7 @@ export default function Sections() {
       {/* Top Tech Companies */}
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900">
             Top Tech Companies
           </h2>
           <button className="text-sm text-blue-600 font-medium hover:underline">
@@ -207,7 +207,7 @@ export default function Sections() {
       {/* Productive Applications - First Row */}
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900">
             Productive Applications
           </h2>
           <button className="text-sm text-blue-600 font-medium hover:underline">
@@ -253,7 +253,7 @@ export default function Sections() {
       {/* Productive Applications - Second Row (duplicate for demo) */}
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900">
             Productive Applications
           </h2>
           <button className="text-sm text-blue-600 font-medium hover:underline">
@@ -300,7 +300,7 @@ export default function Sections() {
 
 
 {/* Banner (pixel-tuned) */}
-<div className=" rounded-[32px] p-4 sm:p-6 lg:p-8 text-white flex items-center justify-between shadow-xl relative overflow-hidden min-h-[120px] sm:min-h-[120px]">
+<div className=" rounded-[32px] p-4 sm:p-6 lg:p-8 text-white flex items-center justify-between shadow-xl relative overflow-hidden min-h-[160px] sm:min-h-[120px]">
   {/* decorative SVG pushed far right, lower opacity and scaled up so curves match reference */}
   <img
     src={rectangle73}
@@ -314,7 +314,7 @@ export default function Sections() {
       height: "150%",
       objectFit: "contain",
       objectPosition: "right center",
-      transform: "scale1.05)",
+      transform: "scale(2)",
     }}
   />
 
@@ -349,7 +349,7 @@ export default function Sections() {
             className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
             style={{ zIndex: 1 }}
           />
-          <h3 className="text-2xl font-bold relative z-10">Productive</h3>
+          <h3 className="text-2xl font-semibold relative z-10">Productive</h3>
           <p className="text-lg relative z-10">Tools</p>
         </div>
 
@@ -362,7 +362,7 @@ export default function Sections() {
             className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
             style={{ zIndex: 1 }}
           />
-          <h3 className="text-2xl font-bold relative z-10">Creative</h3>
+          <h3 className="text-2xl font-semibold relative z-10">Creative</h3>
           <p className="text-lg relative z-10">Tools</p>
         </div>
 
@@ -375,7 +375,7 @@ export default function Sections() {
             className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
             style={{ zIndex: 1 }}
           />
-          <h3 className="text-2xl font-bold relative z-10">SAP</h3>
+          <h3 className="text-2xl font-semibold relative z-10">SAP</h3>
           <p className="text-lg relative z-10">Tools</p>
         </div>
 
@@ -388,7 +388,7 @@ export default function Sections() {
             className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
             style={{ zIndex: 1 }}
           />
-          <h3 className="text-2xl font-bold relative z-10">Developer</h3>
+          <h3 className="text-2xl font-semibold relative z-10">Developer</h3>
           <p className="text-lg relative z-10">Tools</p>
         </div>
       </div>
@@ -396,7 +396,7 @@ export default function Sections() {
       {/* Popular Categories */}
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900">
             Popular Categories
           </h2>
           <button className="text-sm text-blue-600 font-medium hover:underline">
@@ -407,7 +407,7 @@ export default function Sections() {
           {categories.map((category, i) => (
             <div
               key={i}
-              className={`relative ${category.bgColor} rounded-2xl p-3 shadow-md hover:shadow-xl transition-shadow${category.border ? " border-1" : ""}`}
+              className={`relative ${category.bgColor} rounded-2xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between h-40${category.border ? " border-1" : ""}`}
               style={{
                 ...(category.customBg ? { backgroundColor: category.customBg } : {}),
                 ...(category.border ? { borderColor: "#345EA2" } : {})
@@ -421,20 +421,20 @@ export default function Sections() {
                 />
               )}
               <div>
-                   <h3
-                className={`font-semibold mb-4 ${
+                   <h3 
+                className={`font-semibold min-h-[60px] mb-4 ${
                     category.border ? "text-[#345EA2]" : (category.textColor || "text-white")
                 }`}
               >
                 {category.name}
               </h3>
               </div>
-            <div className="flex items-center flex-wrap gap-3 justify-between mt-4">
+            <div className="flex flex-col items-start gap-2  mt-4">
       <p className={`text-sm ${category.border ? "text-[#345EA2]" : (category.textColor ? "text-gray-600" : "text-white/80")}`}>
         {category.count}
       </p>
       <button
-        className={`px-6 py-1 ${category.textColor ? "border-1 border-[#41C3FF]" : "bg-[#41C3FF]"} rounded-full text-md font-medium ${category.textColor || "text-white"}`}
+        className={`px-8 py-1 ${category.textColor ? "border-1 border-[#41C3FF]" : "bg-[#41C3FF]"} rounded-full text-md font-medium ${category.textColor || "text-white"} `}
         // style={!category.textColor ? { backgroundColor: "rgba(65,195,255,0.2)" } : undefined}
       >
         →
