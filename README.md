@@ -27,7 +27,7 @@ A complete SaaS platform with user authentication, vendor management, and AI int
 - MongoDB + Mongoose
 - JWT Authentication
 - bcryptjs for password hashing
-- OpenAI Integration
+- AI Integration (Anthropic Claude or OpenAI selectable via env)
 
 ### Frontend
 
@@ -96,7 +96,7 @@ npm run dev
 The application will be available at:
 
 - Frontend: http://localhost:5173
-- Backend: http://localhost:5000
+- Backend: http://localhost:5001 (configurable via `PORT`)
 
 ## 🔐 Authentication
 
@@ -186,9 +186,23 @@ saasorbit_master/
 Create a `.env` file in the `backend` folder:
 
 ```env
+PORT=5001
+CLIENT_URL=http://localhost:5173
 MONGO_URI=mongodb://localhost:27017/saasorbit
 JWT_SECRET=your-super-secret-jwt-key
-PORT=5000
+
+# AI provider: 'anthropic' (default) or 'openai'
+AI_PROVIDER=anthropic
+
+# Anthropic (Claude) API key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+# Optional override model
+ANTHROPIC_MODEL=claude-3.5-haiku-latest
+
+# OpenAI (optional; used if AI_PROVIDER=openai)
+OPENAI_API_KEY=your-openai-api-key
+# Optional override model
+OPENAI_MODEL=gpt-4.1-mini
 ```
 
 ## 🤝 Contributing
@@ -210,3 +224,11 @@ For detailed authentication documentation, see:
 - [LOGIN_FLOW_DOCUMENTATION.md](./LOGIN_FLOW_DOCUMENTATION.md)
 - [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 - [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)
+
+# deployment steup for code
+
+## 1. /Users/rajeshwari/Documents/saasorbit_master/frontend && npm run build
+
+## 2. /Users/rajeshwari/Documents/saasorbit_master/admin && npm run build
+
+## 3. /Users/rajeshwari/Documents/saasorbit_master && firebase deploy

@@ -29,6 +29,21 @@ export const VendorFormProvider = ({ children }) => {
     linkedin: "",
     x: "",
     accepted: false,
+    adminName: "",
+    adminJobTitle: "",
+    adminContactNumber: "",
+    companyLegalName: "",
+    brandName: "",
+    companyLogo: "",
+    foundedYear: "",
+    companySize: "",
+    businessType: "",
+    saasCategory: "",
+    saasType: "",
+    shortDescription: "",
+    detailedDescription: "",
+    registrationNumber: "",
+    supportEmail: "",
   });
 
   const updateField = (field, value) => {
@@ -64,6 +79,21 @@ export const VendorFormProvider = ({ children }) => {
       linkedin: "",
       x: "",
       accepted: false,
+      adminName: "",
+      adminJobTitle: "",
+      adminContactNumber: "",
+      companyLegalName: "",
+      brandName: "",
+      companyLogo: "",
+      foundedYear: "",
+      companySize: "",
+      businessType: "",
+      saasCategory: "",
+      saasType: "",
+      shortDescription: "",
+      detailedDescription: "",
+      registrationNumber: "",
+      supportEmail: "",
     });
   };
 

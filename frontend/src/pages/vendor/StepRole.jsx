@@ -19,7 +19,7 @@ export default function StepRole({ next }) {
       {/* Header */}
       <div className="text-center mb-12">
         <p className="text-lg text-gray-700 mb-2">Let us know your profile</p>
-        <h2 className="text-3xl font-bold text-gray-900">Register as</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">Register as</h2>
       </div>
 
       {/* Role Selection Buttons */}
@@ -40,10 +40,17 @@ export default function StepRole({ next }) {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4">
+        <button
+          onClick={handleNext}
+          className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+        >
+          Continue
+        </button>
+
         <button
           onClick={() => window.history.back()}
-          className="flex items-center justify-center gap-2 px-8 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+          className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent hover:bg-gray-50 text-gray-700 font-medium rounded-full transition-colors"
         >
           <svg
             className="w-5 h-5"
@@ -59,26 +66,6 @@ export default function StepRole({ next }) {
             />
           </svg>
           Back
-        </button>
-
-        <button
-          onClick={handleNext}
-          className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
-        >
-          Next
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
         </button>
       </div>
     </div>

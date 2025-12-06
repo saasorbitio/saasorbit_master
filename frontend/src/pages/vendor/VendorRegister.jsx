@@ -8,6 +8,7 @@ import StepRole from "./StepRole";
 import StepRegister from "./StepRegister";
 import StepOTP from "./StepOTP";
 import StepCompany from "./StepCompany";
+import StepCompanyDetails from "./StepCompanyDetails";
 import StepContact from "./StepContact";
 import StepSocial from "./StepSocial";
 import StepTerms from "./StepTerms";
@@ -27,13 +28,29 @@ export default function VendorRegister() {
     setIsSubmitting(true);
     try {
       console.log("Submitting form data:", formData);
-      const response = await axios.post("/api/vendor/register", formData);
+      const form = new FormData();
+      for (const key in formData) {
+        if (formData[key] !== undefined && formData[key] !== null) {
+          // If companyLogo is a File, append as file, else as string
+          if (key === "companyLogo" && formData[key] instanceof File) {
+            form.append(key, formData[key], formData[key].name);
+          } else {
+            form.append(key, formData[key]);
+          }
+        }
+      }
+      const response = await axios.post("/api/vendor/register", form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.data.success) {
         toast.success("Registration successful! 🎉");
 
         // Auto-login after successful registration
-        const userData = {
+        // Use full vendor profile from backend response
+        const userData = response.data.vendor || {
           email: formData.email,
           name: formData.companyName,
           role: formData.role || "vendor",
@@ -65,16 +82,17 @@ export default function VendorRegister() {
       {step === 1 && <StepRegister next={next} back={back} />}
       {step === 2 && <StepOTP next={next} back={back} />}
       {step === 3 && <StepCompany next={next} back={back} />}
-      {step === 4 && <StepContact next={next} back={back} />}
-      {step === 5 && <StepSocial next={next} back={back} />}
-      {step === 6 && (
+      {step === 4 && <StepCompanyDetails next={next} back={back} />}
+      {step === 5 && <StepContact next={next} back={back} />}
+      {step === 6 && <StepSocial next={next} back={back} />}
+      {step === 7 && (
         <StepTerms
           back={back}
           onSubmit={handleFinalSubmit}
           isSubmitting={isSubmitting}
         />
       )}
-      {step === 7 && <StepSuccess />}
+      {step === 8 && <StepSuccess />}
     </div>
   );
 }

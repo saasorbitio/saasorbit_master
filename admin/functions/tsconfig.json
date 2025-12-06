@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "skipLibCheck": true        // 👈 add this
+  },
+  "compileOnSave": true,
+  "include": [
+    "src/**/*.ts"               // 👈 compile only backend src
+  ],
+  "exclude": [
+    "../node_modules",           // 👈 prevent crawling frontend node_modules
+    "**/*.test.ts"
+  ]
+}

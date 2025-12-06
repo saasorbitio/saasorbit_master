@@ -1,0 +1,4 @@
+window.__ENV = {
+  VITE_SUPABASE_URL: "your-supabase-url-here",
+  VITE_SUPABASE_ANON_KEY: "your-anon-key-here"
+};

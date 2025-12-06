@@ -59,6 +59,22 @@ const vendorSchema = new mongoose.Schema(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
+    // Profile Details Fields
+    adminName: String,
+    adminJobTitle: String,
+    adminContactNumber: String,
+    companyLegalName: String,
+    brandName: String,
+    companyLogo: String,
+    foundedYear: String,
+    companySize: String,
+    businessType: String,
+    saasCategory: String,
+    saasType: String,
+    shortDescription: String,
+    detailedDescription: String,
+    registrationNumber: String,
+    supportEmail: String,
   },
   { timestamps: true }
 );

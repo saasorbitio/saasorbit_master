@@ -2,7 +2,7 @@ import headerImg from "../assets/header_img.svg";
 
 export default function HeroSection() {
   return (
-    <div className="bg-white rounded-[32px] shadow-lg mb-8 relative overflow-hidden h-72 sm:h-96">
+    <div className="bg-white rounded-[32px] shadow-lg mb-8 relative overflow-hidden h-[28rem] sm:h-[36rem]">
       {/* full-bleed SVG background */}
       <img
         src={headerImg}

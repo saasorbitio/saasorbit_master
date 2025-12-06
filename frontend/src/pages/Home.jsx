@@ -1,11 +1,15 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../assets/SaasOrbit_logo 1.svg";
 import wordLogo from "../assets/word.svg"; // added import for Microsoft Word SVG
 import canvaLogo from "../assets/canva.svg";
 import LightroomLogo from "../assets/Lightroom.svg";
 import PowerPointLogo from "../assets/PowerPoint.svg";
+import CopilotLogo from "../assets/Copilot.svg";
+import linkedinLogo from "../assets/linkedin.svg";
+import acrobatLogo from "../assets/acrobat.svg";
+import sketchLogo from "../assets/sketch.svg";
 
 export default function Home() {
   const { user, logout } = useAuth();
@@ -15,15 +19,54 @@ export default function Home() {
   const [chatMessages, setChatMessages] = useState([
     { role: "bot", text: "Hi! Ask about software, products, or services." },
   ]);
+  const [vendorProfile, setVendorProfile] = useState(null);
 
-  // Derive display name and initial dynamically from authenticated user
-  const displayName = user?.name || user?.companyName || "Your Company";
+  // Fetch full vendor profile after login
+  useEffect(() => {
+    async function fetchVendorProfile() {
+      if (user?.id) {
+        try {
+          const res = await fetch(`/api/vendor/${user.id}`);
+          const data = await res.json();
+          if (data.success && data.vendor) {
+            setVendorProfile(data.vendor);
+          }
+        } catch (err) {
+          // Optionally handle error
+        }
+      }
+    }
+    fetchVendorProfile();
+  }, [user]);
+  console.log(vendorProfile);
+
+  // Derive display name and initial dynamically from vendorProfile or user
+  const displayName =
+    vendorProfile?.companyName ||
+    user?.name ||
+    user?.companyName ||
+    "Your Company";
   const displayInitial = displayName?.charAt(0)?.toUpperCase() || "";
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      logout();
+      navigate("/", { replace: true });
+    }
   };
+
+  // Prevent back navigation to home after logout
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (!user) {
+        navigate("/", { replace: true });
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [user, navigate]);
 
   // Placeholder send function; later will integrate with backend API
   const sendMessage = async (message) => {
@@ -34,7 +77,7 @@ export default function Home() {
     setChatInput("");
 
     try {
-      const response = await fetch("http://localhost:5001/api/ai/chat", {
+      const response = await fetch("/vendor/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -44,11 +87,41 @@ export default function Home() {
       });
 
       const data = await response.json();
+
+      // Check if response was successful
+      if (!response.ok) {
+        // Handle quota exceeded (429 error)
+        if (response.status === 429) {
+          setChatMessages((prev) => [
+            ...prev,
+            {
+              role: "bot",
+              text: "🚫 Our AI service has reached its daily usage limit. Please try again later or contact support for assistance.",
+            },
+          ]);
+          return;
+        }
+
+        // Handle other errors with user-friendly message
+        const errorMessage =
+          data.userMessage ||
+          data.message ||
+          "Unable to process your request. Please try again.";
+        setChatMessages((prev) => [
+          ...prev,
+          { role: "bot", text: `⚠️ ${errorMessage}` },
+        ]);
+        return;
+      }
+
       setChatMessages((prev) => [...prev, { role: "bot", text: data.reply }]);
     } catch (error) {
       setChatMessages((prev) => [
         ...prev,
-        { role: "bot", text: "⚠ Error occurred.", error },
+        {
+          role: "bot",
+          text: "⚠️ Connection error. Please check your internet connection and try again.",
+        },
       ]);
     }
   };
@@ -88,35 +161,35 @@ export default function Home() {
       bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
     },
     {
-      name: "Microsoft Word",
+      name: "Microsoft Copilot",
       subtitle: "Productivity",
       rating: 4.2,
-      icon: wordLogo, // use imported svg
+      icon: CopilotLogo, // use imported svg
       isImage: true, // mark as image so renderer shows <img>
       bgColor: "bg-green-600",
     },
     {
-      name: "Canva",
-      subtitle: "AI Video & Photo Editor",
+      name: "Linkedin",
+      subtitle: "Social",
       rating: 4.2,
-      icon: canvaLogo, // use imported svg
+      icon: linkedinLogo, // use imported svg
       isImage: true,
 
       bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
     },
     {
-      name: "Adobe Lightroom",
-      subtitle: "Photo Editor Tool",
+      name: "Adobe Acrobat Reader DC",
+      subtitle: "Productivity",
       rating: 4.2,
-      icon: LightroomLogo, // use imported svg
+      icon: acrobatLogo, // use imported svg
       isImage: true,
       bgColor: "bg-blue-900",
     },
     {
-      name: "Microsoft PowerPoint",
-      subtitle: "Presentation Tool",
+      name: "Sketch Book Pro",
+      subtitle: "Multimedia Design",
       rating: 4.2,
-      icon: PowerPointLogo, // use imported svg
+      icon: sketchLogo, // use imported svg
       isImage: true,
       bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
     },
@@ -162,16 +235,16 @@ export default function Home() {
           {/* Right Side */}
           <div className="flex items-center gap-4">
             <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
-              Contact Us
+              Chat with Us
             </button>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <span className="text-sm text-gray-700 font-medium">Ind</span>
               <img
                 src="https://flagcdn.com/w40/in.png"
                 alt="India"
                 className="w-7 h-7 rounded-3xl shadow-sm"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </header>
@@ -181,7 +254,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-6">
           {/* Left Column - Main Content */}
           <div className="space-y-6">
-            {/* Chat Bot Main Card (per screenshot) */}
+            {/* Chat Bot Main Card (per screenshot)  start*/}
             <div className="relative bg-white rounded-3xl p-8 shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">
@@ -273,41 +346,62 @@ export default function Home() {
                 </button>
               </div>
             </div>
+            {/* Chat Bot Main Card (per screenshot)  end*/}
 
             {/* Company Profile Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-6 ">
-                <div className="flex items-center gap-4 ">
-                  <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">
-                      {displayInitial}
-                    </span>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {displayName}
-                    </h2>
-                    <p className="text-gray-600">Do cloud right</p>
+            <div className="rounded-2xl p-0">
+              <div className="flex flex-col lg:flex-row items-stretch lg:items-stretch gap-2">
+                {/* Left: Logo-style card (like the reference image) */}
+                <div className="w-full lg:w-[30%] overflow-hidden">
+                  <div className="bg-white rounded-2xl p-6 shadow-sm flex items-center justify-center h-44 lg:h-56">
+                    <div className="flex items-center gap-3">
+                      {/* Show only companyLogo, no text/initials */}
+                      {vendorProfile?.companyLogo ? (
+                        <img
+                          src={
+                            vendorProfile.companyLogo.startsWith("uploads/")
+                              ? `http://localhost:5001/${vendorProfile.companyLogo}`
+                              : vendorProfile.companyLogo
+                          }
+                          alt="Company Logo"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      ) : user.companyLogo ? (
+                        <img
+                          src={
+                            user.companyLogo.startsWith("uploads/")
+                              ? `http://localhost:5001/${user.companyLogo}`
+                              : user.companyLogo
+                          }
+                          alt="Company Logo"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 bg-gray-200 rounded-xl"></div>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <button className="px-8 py-2 text-[#5A5A5A]  bg-[#FAFAFA] rounded-2xl">
-                  Edit
-                </button>
-              </div>
 
-              <div className="mb-6 border-gray-200 ">
-                <img
-                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=300&fit=crop"
-                  alt="Company"
-                  className="w-full h-48 object-cover rounded-xl"
-                />
+                {/* Right: Company Image */}
+                <div className="w-full lg:w-[70%] overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=300&fit=crop"
+                    alt="Company"
+                    className="w-full h-44 lg:h-56 object-cover rounded-xl"
+                  />
+                </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="flex  items-start justify-between gap-4 mb-4">
-                <div className="flex items-center gap-4 min-w-0">
+            <div className="bg-white rounded-2xl p-10 shadow-sm">
+              {/* Top row: Edit button absolutely positioned at top right, logo/name below */}
+              <div className="relative mb-5">
+                <button className="absolute top-0 right-0 px-6 py-2 text-[#5A5A5A] bg-[#FAFAFA] rounded-2xl">
+                  Edit
+                </button>
+                <div className="flex items-center gap-4 min-w-0 pt-2">
                   <div className="w-12 h-12 bg-gray-900 rounded-md flex items-center justify-center overflow-hidden">
-                    <span className="text-white font-bold text-lg">
+                    <span className="text-white font-bold text-xl">
                       {displayInitial}
                     </span>
                   </div>
@@ -315,14 +409,16 @@ export default function Home() {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 truncate">
                       {displayName}
                     </h2>
-                    <p className="text-gray-600 text-sm mt-1">Do cloud right</p>
+                    {/* <p className="text-gray-600 text-sm mt-1">Do cloud right</p> */}
                   </div>
-                  <p className="text-sm text-gray-600 mb-4 border-gray-200 ">
-                    Software Development | San Francisco, California. 301K
-                    followers | 1K-5K employees
-                  </p>
                 </div>
               </div>
+
+              {/* Second row: company details under the name block */}
+              <p className="text-sm text-gray-600 mt-3">
+                Software Development | San Francisco, California. 301K followers
+                <br />| <span className="underline">1K-5K employees</span>
+              </p>
             </div>
 
             {/* Tabs */}
@@ -330,7 +426,7 @@ export default function Home() {
               <div className="flex gap-2 items-center">
                 <button
                   onClick={() => setActiveTab("products")}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "products"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -341,7 +437,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("posts")}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4  rounded-full text-sm font-medium transition-colors ${
                     activeTab === "posts"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -352,7 +448,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("services")}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "services"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -363,7 +459,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("queries")}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
                     activeTab === "queries"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -374,7 +470,7 @@ export default function Home() {
               </div>
 
               <div className="flex-shrink-0">
-                <button className="px-10 py-2 h-10 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm">
+                <button className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm">
                   + Add
                 </button>
               </div>
@@ -386,10 +482,10 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Search for Product/Post/Service"
-                  className="w-full text-gray-550 px-4 py-2 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-[#FFFFFF] text-gray-500 px-10 py-5  rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="flex items-center gap-2 shadow bg-white rounded-full px-5 py-2">
+              <div className="flex items-center gap-2 shadow bg-white rounded-full px-4 py-2">
                 <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded">
                   Sort by <span>▼</span>
                 </button>
@@ -408,7 +504,8 @@ export default function Home() {
                 {products.map((app, i) => (
                   <div
                     key={i}
-                    className="bg-white rounded-3xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+                    className=" rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+                    style={{ backgroundColor: "#FAFAFA" }}
                   >
                     {/* colored rounded tile for app icon (matches screenshot) */}
                     <div
@@ -472,7 +569,7 @@ export default function Home() {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-red-600 hover:text-red-700 font-medium"
+                  className="text-sm text-red-600 hover:text-red-700 font-medium cursor-pointer"
                 >
                   Logout
                 </button>

@@ -1,9 +1,16 @@
 import microsoftLogo from "../assets/microSoft.svg";
 import AppleLogo from "../assets/Apple.svg";
-import GoogleLogo from "../assets/Google.svg"
+import GoogleLogo from "../assets/Google.svg";
 import nvidiaLogo from "../assets/Nvidia.svg";
 import wordLogo from "../assets/word.svg"; // added import for Microsoft Word SVG
 import canvaLogo from "../assets/canva.svg";
+import CopilotLogo from "../assets/Copilot.svg";
+import linkedinLogo from "../assets/linkedin.svg";
+import acrobatLogo from "../assets/acrobat.svg";
+import sketchLogo from "../assets/sketch.svg";
+import photoshopLogo from "../assets/photoshop.svg";
+import nortonLogo from "../assets/norton.svg";
+import filesLogo from "../assets/files.svg";
 import LightroomLogo from "../assets/Lightroom.svg";
 import PowerPointLogo from "../assets/PowerPoint.svg";
 import rectangle73 from "../assets/Rectangle 73.svg";
@@ -15,33 +22,24 @@ import rectangle86 from "../assets/Rectangle 86.svg";
 export default function Sections() {
   const techCompanies = [
     {
-   
-    
       logo: microsoftLogo,
       isImage: true,
       followText: "Follow",
     },
     {
-      
-     
       logo: AppleLogo,
       isImage: true,
       followText: "Follow",
     },
     {
-      
-     
       logo: GoogleLogo,
       isImage: true,
       followText: "Follow",
     },
     {
-    
-    
-      logo:nvidiaLogo,
+      logo: nvidiaLogo,
       isImage: true,
       followText: "Follow",
-
     },
   ];
 
@@ -51,16 +49,16 @@ export default function Sections() {
       subtitle: "Productivity",
       rating: 4.2,
       icon: wordLogo, // use imported svg
-      isImage: true,  // mark as image so renderer shows <img>
+      isImage: true, // mark as image so renderer shows <img>
       bgColor: "bg-green-600",
     },
     {
       name: "Canva",
       subtitle: "AI Video & Photo Editor",
       rating: 4.2,
-       icon: canvaLogo, // use imported svg
+      icon: canvaLogo, // use imported svg
       isImage: true,
-    
+
       bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
     },
     {
@@ -79,32 +77,115 @@ export default function Sections() {
       isImage: true,
       bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
     },
-    
+    {
+      name: "Microsoft Copilot",
+      subtitle: "Productivity",
+      rating: 4.2,
+      icon: CopilotLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
+    {
+      name: "Linkedin",
+      subtitle: "Social",
+      rating: 4.2,
+      icon: linkedinLogo, // use imported svg
+      isImage: true,
+
+      bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
+    },
+    {
+      name: "Adobe Acrobat Reader DC",
+      subtitle: "Productivity",
+      rating: 4.2,
+      icon: acrobatLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-blue-900",
+    },
+    {
+      name: "Sketch Book Pro",
+      subtitle: "Multimedia Design",
+      rating: 4.2,
+      icon: sketchLogo, // use imported svg
+      isImage: true,
+      bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
+    },
+  ];
+  const toppaid = [
+    {
+      name: "Adobe Photoshop",
+      subtitle: "Photo Editing",
+      rating: 4.2,
+      icon: photoshopLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
+    {
+      name: "Norton 360",
+      subtitle: "AI Video & Photo Editor",
+      rating: 4.2,
+      icon: nortonLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
+    {
+      name: "Adobe Lightroom",
+      subtitle: "Photo Editor Tool",
+      rating: 4.2,
+      icon: LightroomLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
+    {
+      name: "Files App",
+      subtitle: "Productivity",
+      rating: 4.2,
+      icon: filesLogo, // use imported svg
+      isImage: true, // mark as image so renderer shows <img>
+      bgColor: "bg-green-600",
+    },
   ];
 
   const categories = [
     {
-      name: "Customer Relationship Management",
+      name: (
+        <>
+          Customer
+          <br /> Relationship
+          <br />
+          Management
+        </>
+      ),
       count: "186 Softwares",
-      bgColor: "", // remove Tailwind class
-      // image: rectangle69, // (if not already present, add this line)
-      customBg: "#0049C0", // add custom background color
+      bgColor: "bg-white", // white by default
+      textColor: "text-gray-900",
+      border: true,
+      customBg: "#0049C0", // show on hover only
+      isFirstCard: true, // flag to identify first card
     },
     {
-      name: "Marketing Applications",
+      name: (
+        <>
+          Marketing <br />
+          Applications
+        </>
+      ),
       count: "186 Softwares",
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-    
     },
     {
-      name: "Project Management",
+      name: (
+        <>
+          Project <br />
+          Management
+        </>
+      ),
       count: "186 Softwares",
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-     
     },
     {
       name: "Accounting",
@@ -112,7 +193,6 @@ export default function Sections() {
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-    
     },
     {
       name: "HR & Payroll",
@@ -120,15 +200,19 @@ export default function Sections() {
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-     
     },
     {
-      name: "Enterprise Resource Planning",
+      name: (
+        <>
+          Enterprise
+          <br />
+          Resource Planning
+        </>
+      ),
       count: "186 Softwares",
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-    
     },
     {
       name: "Collaboration",
@@ -136,27 +220,30 @@ export default function Sections() {
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-     
     },
     {
-      name: "Customer Support",
+      name: (
+        <>
+          Customer <br />
+          Relationship Management
+        </>
+      ),
       count: "186 Softwares",
       bgColor: "bg-white",
       textColor: "text-gray-900",
       border: true,
-     
     },
   ];
 
   return (
     <div className="space-y-8">
       {/* Top Tech Companies */}
-      <div>
-        <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-semibold text-gray-900">
+      <div className="bg-white p-8 rounded-2xl">
+        <div className="flex justify-between items-center mb-5 ">
+          <h2 className="text-xl font-normal text-gray-900">
             Top Tech Companies
           </h2>
-          <button className="text-sm text-blue-600 font-medium hover:underline">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
             View All
           </button>
         </div>
@@ -164,12 +251,11 @@ export default function Sections() {
           {techCompanies.map((company, i) => (
             <div
               key={i}
-              className="bg-white rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[180px] border border-transparent"
+              className="bg-[FAFAFA]  rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[180px] border border-transparent"
+              style={{ backgroundColor: "#FAFAFA" }}
             >
               {/* Logo square: much larger so logo occupies most of the card */}
-              <div
-                className="w-32 h-28 sm:w-34 sm:h-32 rounded-xl flex items-center justify-center mb-3"
-              >
+              <div className="w-32 h-28 sm:w-34 sm:h-32 rounded-xl flex items-center justify-center mb-3">
                 {company.isImage ? (
                   <img
                     src={company.logo}
@@ -205,12 +291,12 @@ export default function Sections() {
       </div>
 
       {/* Productive Applications - First Row */}
-      <div>
+      <div className="bg-white p-8 rounded-2xl">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-normal text-gray-900">
             Productive Applications
           </h2>
-          <button className="text-sm text-blue-600 font-medium hover:underline">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
             View All
           </button>
         </div>
@@ -218,7 +304,8 @@ export default function Sections() {
           {productiveApps.map((app, i) => (
             <div
               key={i}
-              className="bg-white rounded-3xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+              className=" rounded-3xl p-2  hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+              style={{ backgroundColor: "#FAFAFA" }}
             >
               {/* colored rounded tile for app icon (matches screenshot) */}
               <div
@@ -237,7 +324,9 @@ export default function Sections() {
                 )}
               </div>
 
-              <h3 className="font-semibold text-sm text-gray-900 mt-1">{app.name}</h3>
+              <h3 className="font-semibold text-sm text-gray-900 mt-1">
+                {app.name}
+              </h3>
               <p className="text-xs text-gray-500 mt-1 mb-1">{app.subtitle}</p>
 
               {/* centered rating */}
@@ -250,21 +339,20 @@ export default function Sections() {
         </div>
       </div>
 
-      {/* Productive Applications - Second Row (duplicate for demo) */}
-      <div>
+      {/* Top Company Applications - Second Row (duplicate for demo) */}
+      <div className="bg-white p-8 rounded-2xl">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Productive Applications
-          </h2>
-          <button className="text-sm text-blue-600 font-medium hover:underline">
+          <h2 className="text-xl font-normal text-gray-900">Top Paid Apps</h2>
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
             View All
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {productiveApps.map((app, i) => (
+          {toppaid.map((app, i) => (
             <div
               key={i}
-              className="bg-white rounded-3xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+              className=" rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+              style={{ backgroundColor: "#FAFAFA" }}
             >
               {/* colored rounded tile for app icon (matches screenshot) */}
               <div
@@ -283,7 +371,9 @@ export default function Sections() {
                 )}
               </div>
 
-              <h3 className="font-semibold text-sm text-gray-900 mt-1">{app.name}</h3>
+              <h3 className="font-semibold text-sm text-gray-900 mt-1">
+                {app.name}
+              </h3>
               <p className="text-xs text-gray-500 mt-1 mb-1">{app.subtitle}</p>
 
               {/* centered rating */}
@@ -298,45 +388,54 @@ export default function Sections() {
 
       {/* Banner */}
 
+      {/* Banner (pixel-tuned) */}
+      <div className=" rounded-[32px] p-4 sm:p-6 lg:p-8 text-white flex items-center gap-4 shadow-xl relative overflow-hidden min-h-[160px] sm:min-h-[120px]">
+        {/* decorative SVG pushed far right, lower opacity and scaled up so curves match reference */}
+        <img
+          src={rectangle73}
+          alt=""
+          className="absolute pointer-events-none opacity-100"
+          style={{
+            zIndex: 0,
+            right: "-18%",
+            // top: "-6%",
+            width: "82%",
+            height: "150%",
+            objectFit: "contain",
+            objectPosition: "right center",
+            transform: "scale(2)",
+          }}
+        />
 
-{/* Banner (pixel-tuned) */}
-<div className=" rounded-[32px] p-4 sm:p-6 lg:p-8 text-white flex items-center justify-between shadow-xl relative overflow-hidden min-h-[160px] sm:min-h-[120px]">
-  {/* decorative SVG pushed far right, lower opacity and scaled up so curves match reference */}
-  <img
-    src={rectangle73}
-    alt=""
-    className="absolute pointer-events-none opacity-100"
-    style={{
-      zIndex: 0,
-      right: "-18%",
-      // top: "-6%",
-      width: "82%",
-      height: "150%",
-      objectFit: "contain",
-      objectPosition: "right center",
-      transform: "scale(2)",
-    }}
-  />
+        {/* left stacked text — tight spacing, small caps + large italic heading */}
+        <div className="relative z-10 w-1/2">
+          <p className="text-xl sm:text-[28px] md:text-[32px] lg:text-[36px] italic opacity-90 leading-tight mb-[2px]">
+            Power Up
+          </p>
+          <p className="text-xl sm:text-[28px] md:text-[32px] lg:text-[36px] italic opacity-90 leading-tight mb-[4px]">
+            Your Business With
+          </p>
+          <h3 className="text-2xl sm:text-3xl lg:text-5xl font-semibold italic leading-tight tracking-tight">
+            Smarter Software.
+          </h3>
+        </div>
 
-  {/* left stacked text — tight spacing, small caps + large italic heading */}
-  <div className="relative z-10 max-w-[60%]">
-    <p className="text-sm sm:text-[20px] md:text-[22px] lg:text-[26px] italic opacity-90 leading-tight mb-[2px]">Power Up</p>
-<p className="text-sm sm:text-[20px] md:text-[22px] lg:text-[26px] italic opacity-90 leading-tight mb-[4px]">Your Business With</p>
-    <h3 className="text-lg sm:text-2xl lg:text-4xl font-semibold italic leading-tight tracking-tight">Smarter Software.</h3>
-  </div>
-
-  {/* right aligned buttons — compact, pill-shaped, vertical center aligned */}
-  <div className="flex gap-3 items-center relative z-10">
-    <button className="px-4 sm:px-6 py-2 rounded-full border border-white/30 bg-white/6 text-white text-sm font-semibold hover:bg-white/10 transition-colors">
-      Know More
-    </button>
-    <button className="px-5 sm:px-7 py-2 rounded-full bg-white text-blue-600 text-sm font-semibold shadow-md hover:scale-[1.02] transition-transform">
-      Register
-    </button>
-  </div>
-</div>
-
-
+        {/* right aligned buttons — compact, pill-shaped, vertical center aligned */}
+        <div className="flex gap-3 items-center justify-center relative z-10 w-1/2">
+          <button
+            className="px-10 sm:px-12 py-4 rounded-full border bg-transparent text-white text-lg font-normal hover:bg-white/10 transition-colors"
+            style={{ borderColor: "#00ABFB" }}
+          >
+            Know More
+          </button>
+          <button
+            className="px-10 sm:px-12 py-4 rounded-full bg-white text-lg font-normal shadow-md hover:scale-[1.02] transition-transform"
+            style={{ color: "#00ABFB" }}
+          >
+            Register
+          </button>
+        </div>
+      </div>
 
       {/* Category Grid with Images */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -394,12 +493,12 @@ export default function Sections() {
       </div>
 
       {/* Popular Categories */}
-      <div>
+      <div className="bg-white p-8 rounded-2xl">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-semibold text-gray-900">
             Popular Categories
           </h2>
-          <button className="text-sm text-blue-600 font-medium hover:underline">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
             View All
           </button>
         </div>
@@ -407,10 +506,29 @@ export default function Sections() {
           {categories.map((category, i) => (
             <div
               key={i}
-              className={`relative ${category.bgColor} rounded-2xl p-2 shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between h-40${category.border ? " border-1" : ""}`}
+              className={`group relative ${
+                category.bgColor
+              } rounded-2xl p-4 shadow-md hover:shadow-xl transition-all flex flex-col justify-between h-40${
+                category.border ? " border-1" : ""
+              }`}
               style={{
-                ...(category.customBg ? { backgroundColor: category.customBg } : {}),
-                ...(category.border ? { borderColor: "#345EA2" } : {})
+                ...(category.customBg && !category.isFirstCard
+                  ? { backgroundColor: category.customBg }
+                  : {}),
+                ...(category.border ? { borderColor: "#345EA2" } : {}),
+              }}
+              onMouseEnter={(e) => {
+                if (category.customBg || category.border) {
+                  e.currentTarget.style.backgroundColor =
+                    category.customBg || "#0049C0";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (category.isFirstCard || category.border) {
+                  e.currentTarget.style.backgroundColor = "white";
+                } else if (category.customBg) {
+                  e.currentTarget.style.backgroundColor = category.customBg;
+                }
               }}
             >
               {category.image && (
@@ -421,28 +539,41 @@ export default function Sections() {
                 />
               )}
               <div>
-                   <h3 
-                className={`font-semibold min-h-[60px] mb-4 ${
-                    category.border ? "text-[#345EA2]" : (category.textColor || "text-white")
-                }`}
-              >
-                {category.name}
-              </h3>
+                <h3
+                  className={`font-semibold min-h-[60px] mb-2 transition-colors ${
+                    category.border
+                      ? "text-[#345EA2] group-hover:text-white"
+                      : category.textColor || "text-white"
+                  }`}
+                >
+                  {category.name}
+                </h3>
               </div>
-            <div className="flex flex-col items-start gap-2  mt-4">
-      <p className={`text-sm ${category.border ? "text-[#345EA2]" : (category.textColor ? "text-gray-600" : "text-white/80")}`}>
-        {category.count}
-      </p>
-      <button
-        className={`px-8 py-1 ${category.textColor ? "border-1 border-[#41C3FF]" : "bg-[#41C3FF]"} rounded-full text-md font-medium ${category.textColor || "text-white"} `}
-        // style={!category.textColor ? { backgroundColor: "rgba(65,195,255,0.2)" } : undefined}
-      >
-        →
-      </button>
-    </div>
-         
+              <div className="flex flex-col items-start gap-2  mt-4">
+                <p
+                  className={`text-sm transition-colors ${
+                    category.border
+                      ? "text-[#345EA2] group-hover:text-white/80"
+                      : category.textColor
+                      ? "text-gray-600"
+                      : "text-white/80"
+                  }`}
+                >
+                  {category.count}
+                </p>
+                <button
+                  className={`px-8 py-1 ${
+                    category.textColor
+                      ? "border-1 border-[#41C3FF] group-hover:bg-[#41C3FF] group-hover:border-transparent"
+                      : "bg-[#41C3FF]"
+                  } rounded-full text-md font-medium transition-all ${
+                    category.textColor || "text-white"
+                  } `}
+                >
+                  →
+                </button>
+              </div>
             </div>
-            
           ))}
         </div>
       </div>

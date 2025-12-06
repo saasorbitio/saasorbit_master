@@ -14,6 +14,10 @@ const generateToken = (user) => {
 // POST /api/vendor/register
 export const registerVendor = async (req, res) => {
   try {
+    let companyLogo = req.body.companyLogo;
+    if (req.file) {
+      companyLogo = req.file.path;
+    }
     const {
       role,
       email,
@@ -32,6 +36,20 @@ export const registerVendor = async (req, res) => {
       linkedin,
       x,
       accepted,
+      adminName,
+      adminJobTitle,
+      adminContactNumber,
+      companyLegalName,
+      brandName,
+      foundedYear,
+      companySize,
+      businessType,
+      saasCategory,
+      saasType,
+      shortDescription,
+      detailedDescription,
+      registrationNumber,
+      supportEmail,
     } = req.body;
 
     // Validate required fields
@@ -59,6 +77,45 @@ export const registerVendor = async (req, res) => {
       return res
         .status(400)
         .json({ message: "You must accept terms and conditions" });
+    }
+
+    // Validate profile details if provided
+    if (
+      adminName ||
+      adminJobTitle ||
+      adminContactNumber ||
+      companyLegalName ||
+      brandName ||
+      foundedYear ||
+      companySize ||
+      businessType ||
+      saasCategory ||
+      saasType ||
+      shortDescription ||
+      detailedDescription ||
+      registrationNumber ||
+      supportEmail
+    ) {
+      if (
+        !adminName ||
+        !adminJobTitle ||
+        !adminContactNumber ||
+        !companyLegalName ||
+        !brandName ||
+        !foundedYear ||
+        !companySize ||
+        !businessType ||
+        !saasCategory ||
+        !saasType ||
+        !shortDescription ||
+        !detailedDescription ||
+        !registrationNumber ||
+        !supportEmail
+      ) {
+        return res.status(400).json({
+          message: "Please fill all profile detail fields or skip this step",
+        });
+      }
     }
 
     // Check if vendor already exists
@@ -93,6 +150,22 @@ export const registerVendor = async (req, res) => {
       x,
       accepted,
       status: "pending",
+      // Profile details
+      adminName,
+      adminJobTitle,
+      adminContactNumber,
+      companyLegalName,
+      brandName,
+      companyLogo, // now stores file path if uploaded
+      foundedYear,
+      companySize,
+      businessType,
+      saasCategory,
+      saasType,
+      shortDescription,
+      detailedDescription,
+      registrationNumber,
+      supportEmail,
     });
 
     // Generate token
@@ -107,12 +180,14 @@ export const registerVendor = async (req, res) => {
         email: vendor.email,
         name: vendor.companyName,
         role: vendor.role,
+        companyLogo: vendor.companyLogo,
       },
       vendor: {
         id: vendor._id,
         companyName: vendor.companyName,
         email: vendor.email,
         status: vendor.status,
+        companyLogo: vendor.companyLogo,
       },
     });
   } catch (err) {
@@ -143,5 +218,88 @@ export const getVendorById = async (req, res) => {
   } catch (err) {
     console.error("Get vendor error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// PUT /api/vendor/:id/profile
+export const updateVendorProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      adminName,
+      adminJobTitle,
+      adminContactNumber,
+      companyLegalName,
+      brandName,
+      companyLogo,
+      foundedYear,
+      companySize,
+      businessType,
+      saasCategory,
+      saasType,
+      shortDescription,
+      detailedDescription,
+      registrationNumber,
+      supportEmail,
+      website,
+      landline,
+      fax,
+      address1,
+      address2,
+      city,
+      state,
+      zip,
+      country,
+    } = req.body;
+
+    // Find vendor
+    const vendor = await Vendor.findById(id);
+    if (!vendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+
+    // Update profile fields
+    const updateData = {};
+
+    if (adminName) updateData.adminName = adminName;
+    if (adminJobTitle) updateData.adminJobTitle = adminJobTitle;
+    if (adminContactNumber) updateData.adminContactNumber = adminContactNumber;
+    if (companyLegalName) updateData.companyLegalName = companyLegalName;
+    if (brandName) updateData.brandName = brandName;
+    if (companyLogo) updateData.companyLogo = companyLogo;
+    if (foundedYear) updateData.foundedYear = foundedYear;
+    if (companySize) updateData.companySize = companySize;
+    if (businessType) updateData.businessType = businessType;
+    if (saasCategory) updateData.saasCategory = saasCategory;
+    if (saasType) updateData.saasType = saasType;
+    if (shortDescription) updateData.shortDescription = shortDescription;
+    if (detailedDescription)
+      updateData.detailedDescription = detailedDescription;
+    if (registrationNumber) updateData.registrationNumber = registrationNumber;
+    if (supportEmail) updateData.supportEmail = supportEmail;
+    if (website) updateData.website = website;
+    if (landline) updateData.landline = landline;
+    if (fax) updateData.fax = fax;
+    if (address1) updateData.address1 = address1;
+    if (address2) updateData.address2 = address2;
+    if (city) updateData.city = city;
+    if (state) updateData.state = state;
+    if (zip) updateData.zip = zip;
+    if (country) updateData.country = country;
+
+    // Update vendor
+    const updatedVendor = await Vendor.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Vendor profile updated successfully",
+      vendor: updatedVendor,
+    });
+  } catch (err) {
+    console.error("Update vendor profile error:", err);
+    res.status(500).json({ message: "Server error while updating profile" });
   }
 };

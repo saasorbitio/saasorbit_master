@@ -4,88 +4,82 @@ import Chat from "../models/ChatHistory.js";
 
 const router = express.Router();
 
-// Initialize OpenAI client only if API key is provided
-let client = null;
-if (process.env.OPENAI_API_KEY) {
-  client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+// Lazy-init OpenAI client only when needed
+let openaiClient = null;
+function getOpenAIClient() {
+  if (!openaiClient && process.env.OPENAI_API_KEY) {
+    openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openaiClient;
 }
 
-// === Normal Chat Route with Memory + DB Save ===
 router.post("/chat", async (req, res) => {
-  // Check if OpenAI is configured
-  if (!client) {
+  const { message, userId } = req.body;
+
+  if (!userId) return res.status(400).json({ error: "Missing userId" });
+
+  // Validate OpenAI configuration
+  if (!process.env.OPENAI_API_KEY) {
     return res.status(503).json({
       error:
         "AI service not configured. Please set OPENAI_API_KEY in environment variables.",
     });
   }
 
-  const { message, userId } = req.body;
-
-  if (!userId) return res.status(400).json({ error: "Missing userId" });
-
-  // Retrieve chat history
   let chat = await Chat.findOne({ userId });
   if (!chat) chat = await Chat.create({ userId, messages: [] });
 
-  const conversationHistory = chat.messages.map((m) => ({
-    role: m.role,
-    content: m.content,
-  }));
-
-  conversationHistory.push({ role: "user", content: message });
+  const messages = [
+    { role: "system", content: "You are a SaaS advisor bot." },
+    ...chat.messages.map((m) => ({ role: m.role, content: m.content })),
+    { role: "user", content: message },
+  ];
 
   try {
-    const response = await client.responses.create({
-      model: "gpt-4.1-mini",
-      memory: true,
-      messages: conversationHistory,
+    const client = getOpenAIClient();
+    const response = await client.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      messages,
     });
 
-    const reply = response.output_text;
+    const reply = response.choices[0].message.content;
 
-    // Save to DB
     chat.messages.push({ role: "user", content: message });
     chat.messages.push({ role: "assistant", content: reply });
     await chat.save();
 
     return res.json({ success: true, reply });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "AI request failed" });
-  }
-});
+    console.error("AI chat error:", err);
 
-// === Streaming Route ===
-router.post("/stream", async (req, res) => {
-  // Check if OpenAI is configured
-  if (!client) {
-    return res.status(503).json({
-      error:
-        "AI service not configured. Please set OPENAI_API_KEY in environment variables.",
+    // Handle quota exceeded error
+    if (err.status === 429 || err.message?.includes("quota")) {
+      return res.status(429).json({
+        error: "AI service quota exceeded",
+        message:
+          "The AI service has reached its usage limit. Please contact support or try again later.",
+        userMessage:
+          "Sorry, our AI service is temporarily unavailable due to usage limits. Please try again later or contact support.",
+      });
+    }
+
+    // Handle other OpenAI errors
+    if (err.status) {
+      return res.status(err.status).json({
+        error: "AI service error",
+        message: err.message,
+        userMessage:
+          "Unable to process your request at this time. Please try again.",
+      });
+    }
+
+    // Generic error
+    res.status(500).json({
+      error: "AI request failed",
+      message: err.message,
+      userMessage: "Something went wrong. Please try again.",
     });
   }
-
-  const { message } = req.body;
-
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    Connection: "keep-alive",
-    "Cache-Control": "no-cache",
-  });
-
-  const stream = await client.responses.stream({
-    model: "gpt-4.1-mini",
-    messages: [{ role: "user", content: message }],
-  });
-
-  stream.on("event", (chunk) => {
-    res.write(`data: ${chunk.output_text || ""}\n\n`);
-  });
-
-  stream.on("end", () => res.end());
 });
 
 export default router;

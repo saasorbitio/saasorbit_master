@@ -7,8 +7,24 @@ export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      await logout();
+      navigate("/", { replace: true });
+    }
+  };
+
+  const handleLogoClick = () => {
+    // If authenticated, ask for logout confirmation before going to "/"
+    if (isAuthenticated) {
+      const confirmed = window.confirm("Are you sure you want to logout?");
+      if (confirmed) {
+        logout();
+        navigate("/", { replace: true });
+      }
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -16,14 +32,14 @@ export default function Header() {
       {/* Logo */}
       <div
         className="flex items-center gap-3 cursor-pointer"
-        onClick={() => navigate("/")}
+        onClick={handleLogoClick}
       >
         <img src={logo} alt="SaasOrbit Logo" className="h-12" />
       </div>
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
-        {isAuthenticated ? (
+        {/* {isAuthenticated ? (
           <>
             <span className="text-sm text-gray-700 font-medium">
               Welcome, {user?.name || user?.email}
@@ -42,18 +58,18 @@ export default function Header() {
           >
             Login
           </button>
-        )}
+        )} */}
         <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
-          Contact Us
+          Chat with Us
         </button>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <span className="text-sm text-gray-700 font-medium">Ind</span>
           <img
             src="https://flagcdn.com/w40/in.png"
             alt="India"
             className="w-7 h-7 rounded-3xl shadow-sm"
           />
-        </div>
+        </div> */}
       </div>
     </header>
   );
