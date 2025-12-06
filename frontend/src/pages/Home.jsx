@@ -456,7 +456,7 @@ export default function Home() {
                           <img
                             src={getFileUrl(product.displayIcon)}
                             alt={product.productName}
-                            className="w-20 h-20 object-cover"
+                            className="w-20 h-20 object-cover bg-[#FFFFFF]"
                           />
                         ) : (
                           <span className="text-gray-400">No Icon</span>

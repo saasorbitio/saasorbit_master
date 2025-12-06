@@ -141,12 +141,12 @@ export default function ProductListing() {
     >
       {/* Left: Form fields */}
       <div className="bg-white rounded-2xl shadow p-8 col-span-2 flex flex-col gap-6">
-        <h2 className="text-lg font-semibold mb-2 text-center">
+        <h2 className="text-xl font-semibold mb-2 text-center text-[#2E2E2E]">
           Product Listing
         </h2>
         {/* Product Name */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm text-[#5A5A5A] font-medium mb-1">
             Product Name*
           </label>
           <input
@@ -154,7 +154,7 @@ export default function ProductListing() {
             name="productName"
             value={form.productName}
             onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-xl ${
+            className={`w-full px-4 py-4 bg-[#EEEEEE]  border-0 rounded-4xl ${
               errors.productName ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Product Name"
@@ -165,12 +165,14 @@ export default function ProductListing() {
         </div>
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium mb-1">Category*</label>
+          <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
+            Category*
+          </label>
           <select
             name="category"
             value={form.category}
             onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-xl ${
+            className={`w-full px-4 py-4 bg-[#EEEEEE]   border-0 rounded-4xl ${
               errors.category ? "border-red-500" : "border-gray-300"
             }`}
           >
@@ -187,7 +189,7 @@ export default function ProductListing() {
         </div>
         {/* Use Case Tags */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm  font-medium mb-1">
             Use Case Tags
           </label>
           <input
@@ -197,13 +199,13 @@ export default function ProductListing() {
             onChange={(e) =>
               handleTagChange(e.target.value.split(",").map((t) => t.trim()))
             }
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl"
+            className="w-full px-4 py-4 bg-[#EEEEEE] border-none  rounded-4xl"
             placeholder="HRMS, HR, X"
           />
         </div>
         {/* Recommended Tags */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
             Recommended Tags
           </label>
           <div className="flex flex-wrap gap-3 mt-2">
@@ -211,21 +213,21 @@ export default function ProductListing() {
               <button
                 type="button"
                 key={tag}
-                className="bg-gray-200 text-gray-900 rounded-full px-6 py-2 text-base font-medium flex items-center gap-2 hover:bg-gray-300 transition"
+                className="bg-[#ECECEC] text-gray-600 rounded-4xl px-6 py-2 text-base font-medium flex items-center gap-2  transition"
                 onClick={() => handleAddRecommendedTag(tag)}
                 disabled={form.tags.includes(tag)}
               >
-                {tag} <span className="text-lg font-bold">+</span>
+                {tag} <span className="text-md font-semibold">+</span>
               </button>
             ))}
           </div>
         </div>
         {/* Key Features */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
             Key Features*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative">
+          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#EEEEEE]">
             <input
               type="file"
               name="keyFeaturesFile"
@@ -238,7 +240,7 @@ export default function ProductListing() {
               htmlFor="keyFeaturesFileUpload"
               className="cursor-pointer w-full h-full flex items-center justify-center"
             >
-              Upload
+              Upload Document or Copy Paste here
             </label>
             {form.keyFeaturesFile && (
               <div className="text-xs text-gray-500 mt-1 absolute top-2 left-2">
@@ -249,13 +251,15 @@ export default function ProductListing() {
         </div>
         {/* Integration */}
         <div>
-          <label className="block text-sm font-medium mb-1">Integration*</label>
+          <label className="block text-sm  text-[#5A5A5A] font-medium mb-5">
+            Integration*
+          </label>
           <div className="flex gap-2 flex-wrap">
             {integrations.map((integration) => (
               <button
                 type="button"
                 key={integration}
-                className={`px-4 py-1 rounded-full text-xs font-medium border ${
+                className={`px-5 py-3 text-[#ECECEC] rounded-full text-sm font-medium border-none ${
                   form.integration.includes(integration)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-100 text-gray-700"
@@ -269,7 +273,7 @@ export default function ProductListing() {
         </div>
         {/* Price Model */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block text-sm  text-[#5A5A5A] font-medium mb-5">
             Price Model (Optional)
           </label>
           <div className="flex gap-4">
@@ -280,6 +284,7 @@ export default function ProductListing() {
                   name="priceModel"
                   checked={form.priceModel === model}
                   onChange={() => handlePriceModelChange(model)}
+                  className="w-5 h-5 "
                 />
                 {model}
               </label>
@@ -288,7 +293,7 @@ export default function ProductListing() {
         </div>
         {/* Documentation URL */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block  text-[#5A5A5A] text-sm font-medium mb-1">
             Documentation URL*
           </label>
           <input
@@ -296,7 +301,7 @@ export default function ProductListing() {
             name="documentationUrl"
             value={form.documentationUrl}
             onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-xl ${
+            className={`w-full px-4 py-4 bg-[#EEEEEE] border-none  rounded-4xl ${
               errors.documentationUrl ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="URL"
@@ -309,10 +314,10 @@ export default function ProductListing() {
         </div>
         {/* Release Notes */}
         <div>
-          <label className="block text-sm font-medium mb-1">
+          <label className="block   text-[#5A5A5A] text-sm font-medium mb-1">
             Release Notes*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative">
+          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#EEEEEE]">
             <input
               type="file"
               name="releaseNotesFile"
@@ -325,7 +330,7 @@ export default function ProductListing() {
               htmlFor="releaseNotesFileUpload"
               className="cursor-pointer w-full h-full flex items-center justify-center"
             >
-              Upload
+              Upload Document or Copy Paste here
             </label>
             {form.releaseNotesFile && (
               <div className="text-xs text-gray-500 mt-1 absolute top-2 left-2">
@@ -341,7 +346,7 @@ export default function ProductListing() {
           <label className="block text-sm font-medium mb-1">
             Product Display Icon*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400">
+          <div className="border-none rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#EEEEEE] ">
             <input
               type="file"
               name="displayIcon"
@@ -367,7 +372,7 @@ export default function ProductListing() {
           <label className="block text-sm font-medium mb-1">
             Product Screenshots*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400">
+          <div className="border-none rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#EEEEEE] ">
             <input
               type="file"
               name="screenshots"
@@ -394,7 +399,7 @@ export default function ProductListing() {
             Your Application Preview
           </label>
           <div className="bg-[#F5F7FB] rounded-xl p-4 flex items-center gap-4">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center overflow-hidden">
+            <div className="w-16 h-16 bg-[#FFFFFF] rounded-xl flex items-center justify-center overflow-hidden">
               {/* Show uploaded Product Display Icon if available, else fallback */}
               {form.displayIcon ? (
                 <img
@@ -420,13 +425,13 @@ export default function ProductListing() {
         </div>
         <button
           type="submit"
-          className="w-full py-3 bg-blue-500 text-white rounded-full font-semibold text-lg mt-4"
+          className="w-full py-3 bg-[#00ABFB] text-white rounded-full font-semibold text-md mt-3"
         >
           Add Product
         </button>
         <button
           type="button"
-          className="w-full py-3 bg-gray-100 text-gray-400 rounded-full font-semibold text-lg mt-2"
+          className="w-full py-3 bg-transparent hover:bg-gray-100 text-gray-400 rounded-full font-semibold text-md mt-2"
           onClick={() => setForm(initialState)}
         >
           Discard
