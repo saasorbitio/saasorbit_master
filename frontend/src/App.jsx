@@ -5,6 +5,7 @@ import Sections from "./components/Sections";
 import Footer from "./components/Footer"; // import Footer
 import VendorRegister from "./pages/vendor/VendorRegister";
 import Home from "./pages/Home";
+import ProductListing from "./pages/ProductListing";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -74,6 +75,18 @@ export default function App() {
                         </div>
                       </div>
                     </div>
+                  }
+                />
+
+                {/* Product Listing Route */}
+                <Route
+                  path="/ProductListing"
+                  element={
+                    
+                    <ProtectedRoute>
+                      <Header />
+                      <ProductListing />
+                    </ProtectedRoute>
                   }
                 />
 

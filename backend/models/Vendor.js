@@ -65,7 +65,7 @@ const vendorSchema = new mongoose.Schema(
     adminContactNumber: String,
     companyLegalName: String,
     brandName: String,
-    companyLogo: String,
+    companyLogo: String, // GridFS file ID
     foundedYear: String,
     companySize: String,
     businessType: String,

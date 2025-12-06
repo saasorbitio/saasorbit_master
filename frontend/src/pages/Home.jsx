@@ -10,6 +10,10 @@ import CopilotLogo from "../assets/Copilot.svg";
 import linkedinLogo from "../assets/linkedin.svg";
 import acrobatLogo from "../assets/acrobat.svg";
 import sketchLogo from "../assets/sketch.svg";
+import figmaLogo from "../assets/SM-Banner.svg";
+
+// Add helper for GridFS file URL
+const getFileUrl = (id) => (id ? `http://localhost:5001/file/${id}` : "");
 
 export default function Home() {
   const { user, logout } = useAuth();
@@ -17,9 +21,10 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("products");
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState([
-    { role: "bot", text: "Hi! Ask about software, products, or services." },
+    { role: "bot", text: "Hi! We are building SaaS friendly AI for you" },
   ]);
   const [vendorProfile, setVendorProfile] = useState(null);
+  const [productList, setProductList] = useState([]);
 
   // Fetch full vendor profile after login
   useEffect(() => {
@@ -126,98 +131,21 @@ export default function Home() {
     }
   };
 
-  const products = [
-    {
-      name: "Microsoft Word",
-      subtitle: "Productivity",
-      rating: 4.2,
-      icon: wordLogo, // use imported svg
-      isImage: true, // mark as image so renderer shows <img>
-      bgColor: "bg-green-600",
-    },
-    {
-      name: "Canva",
-      subtitle: "AI Video & Photo Editor",
-      rating: 4.2,
-      icon: canvaLogo, // use imported svg
-      isImage: true,
-
-      bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
-    },
-    {
-      name: "Adobe Lightroom",
-      subtitle: "Photo Editor Tool",
-      rating: 4.2,
-      icon: LightroomLogo, // use imported svg
-      isImage: true,
-      bgColor: "bg-blue-900",
-    },
-    {
-      name: "Microsoft PowerPoint",
-      subtitle: "Presentation Tool",
-      rating: 4.2,
-      icon: PowerPointLogo, // use imported svg
-      isImage: true,
-      bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
-    },
-    {
-      name: "Microsoft Copilot",
-      subtitle: "Productivity",
-      rating: 4.2,
-      icon: CopilotLogo, // use imported svg
-      isImage: true, // mark as image so renderer shows <img>
-      bgColor: "bg-green-600",
-    },
-    {
-      name: "Linkedin",
-      subtitle: "Social",
-      rating: 4.2,
-      icon: linkedinLogo, // use imported svg
-      isImage: true,
-
-      bgColor: "bg-gradient-to-br from-purple-500 via-blue-500 to-teal-400",
-    },
-    {
-      name: "Adobe Acrobat Reader DC",
-      subtitle: "Productivity",
-      rating: 4.2,
-      icon: acrobatLogo, // use imported svg
-      isImage: true,
-      bgColor: "bg-blue-900",
-    },
-    {
-      name: "Sketch Book Pro",
-      subtitle: "Multimedia Design",
-      rating: 4.2,
-      icon: sketchLogo, // use imported svg
-      isImage: true,
-      bgColor: "bg-gradient-to-br from-orange-400 to-red-500",
-    },
-  ];
-
-  const posts = [
-    {
-      user: "Random Jennifer",
-      content: "Best software for team",
-      tag: "#time log at saas",
-      image: "code-image",
-      stats: { views: "22k", comments: "221k", shares: "221k" },
-    },
-    {
-      user: "David Thomson",
-      content: "Best software for team",
-      tag: "#time log at saas",
-      image: "code-image",
-      stats: { views: "22k", comments: "221k", shares: "221k" },
-    },
-    {
-      user: "Jack  Williams",
-      content: "Best software for team",
-      tag: "#time log at saas",
-      image: "code-image",
-      stats: { views: "22k", comments: "221k", shares: "221k" },
-    },
-  ];
+  // Fetch product list from backend
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("http://localhost:5001/api/ProductListing");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.products)) {
+          setProductList(data.products);
+        }
+      } catch (err) {
+        // Optionally handle error
+      }
+    }
+    fetchProducts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F5F7FB]">
@@ -257,57 +185,25 @@ export default function Home() {
             {/* Chat Bot Main Card (per screenshot)  start*/}
             <div className="relative bg-white rounded-3xl p-8 shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Greetings for the Day!
-                </h2>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <button className="hover:text-gray-900">🔍</button>
-                  <button className="hover:text-gray-900">⚙️</button>
+                <div className="w-full text-center">
+                  <h2 className=" font-bold text-gray-900">
+                    Greetings for the Day!
+                  </h2>
+                  <span>How may i help you in your Saas journey</span>
                 </div>
               </div>
-
-              {/* Suggestions row like chips */}
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm text-gray-600 mb-1">Best Productive</p>
-                  <h3 className="font-semibold text-gray-900">
-                    SaaS Products in India
-                  </h3>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm text-gray-600 mb-1">Latest news</p>
-                  <h3 className="font-semibold text-gray-900">
-                    about the SaaS industry world wide
-                  </h3>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                  <p className="text-sm text-gray-600 mb-1">SaaS Service</p>
-                  <h3 className="font-semibold text-gray-900">
-                    Provider for abc application
-                  </h3>
-                </div>
-              </div>
-
               {/* Conversation area */}
               <div className="space-y-3 min-h-[220px] bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-200">
-                {chatMessages.map((m, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${
-                      m.role === "user" ? "justify-end" : "justify-start"
-                    }`}
-                  >
-                    <div
-                      className={`rounded-2xl px-4 py-2 text-sm shadow-sm ${
-                        m.role === "user"
-                          ? "bg-blue-600 text-white rounded-br-sm"
-                          : "bg-white text-gray-800 border border-gray-200 rounded-bl-sm"
-                      }`}
-                    >
-                      {m.text}
+                <div className="flex justify-center my-8">
+                  <div className="bg-[#D6F2FF] rounded-3xl px-5 py-4 text-center  max-w-xl">
+                    <div className=" text-gray-800 mb-2">
+                      We are building SaaS friendly AI for you
+                    </div>
+                    <div className="text-1xl font-bold text-gray-900">
+                      Releasing Soon!
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
 
               {/* Input bar centered with circular send button */}
@@ -348,7 +244,7 @@ export default function Home() {
             </div>
             {/* Chat Bot Main Card (per screenshot)  end*/}
 
-            {/* Company Profile Card */}
+            {/* Company Profile Card start */}
             <div className="rounded-2xl p-0">
               <div className="flex flex-col lg:flex-row items-stretch lg:items-stretch gap-2">
                 {/* Left: Logo-style card (like the reference image) */}
@@ -359,7 +255,10 @@ export default function Home() {
                       {vendorProfile?.companyLogo ? (
                         <img
                           src={
-                            vendorProfile.companyLogo.startsWith("uploads/")
+                            vendorProfile.companyLogo.length === 24 &&
+                            /^[a-f\d]{24}$/i.test(vendorProfile.companyLogo)
+                              ? getFileUrl(vendorProfile.companyLogo)
+                              : vendorProfile.companyLogo.startsWith("uploads/")
                               ? `http://localhost:5001/${vendorProfile.companyLogo}`
                               : vendorProfile.companyLogo
                           }
@@ -369,7 +268,10 @@ export default function Home() {
                       ) : user.companyLogo ? (
                         <img
                           src={
-                            user.companyLogo.startsWith("uploads/")
+                            user.companyLogo.length === 24 &&
+                            /^[a-f\d]{24}$/i.test(user.companyLogo)
+                              ? getFileUrl(user.companyLogo)
+                              : user.companyLogo.startsWith("uploads/")
                               ? `http://localhost:5001/${user.companyLogo}`
                               : user.companyLogo
                           }
@@ -393,18 +295,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-10 shadow-sm">
+            {/* Company Profile Card end */}
+
+            <div className="bg-white rounded-2xl p-8 shadow-sm">
               {/* Top row: Edit button absolutely positioned at top right, logo/name below */}
               <div className="relative mb-5">
                 <button className="absolute top-0 right-0 px-6 py-2 text-[#5A5A5A] bg-[#FAFAFA] rounded-2xl">
                   Edit
                 </button>
                 <div className="flex items-center gap-4 min-w-0 pt-2">
-                  <div className="w-12 h-12 bg-gray-900 rounded-md flex items-center justify-center overflow-hidden">
-                    <span className="text-white font-bold text-xl">
-                      {displayInitial}
-                    </span>
-                  </div>
                   <div className="min-w-0">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 truncate">
                       {displayName}
@@ -416,24 +315,31 @@ export default function Home() {
 
               {/* Second row: company details under the name block */}
               <p className="text-sm text-gray-600 mt-3">
-                Software Development | San Francisco, California. 301K followers
-                <br />| <span className="underline">1K-5K employees</span>
+                {vendorProfile?.detailedDescription || ""}
+                <br />|{" "}
+                <span className="underline">
+                  {vendorProfile?.companySize} employees
+                </span>
               </p>
             </div>
 
-            {/* Tabs */}
-            <div className="flex items-center justify-between   mb-6">
+            {/* Tabs with saasType condition */}
+            <div className="flex items-center justify-between mb-3">
               <div className="flex gap-2 items-center">
-                <button
-                  onClick={() => setActiveTab("products")}
-                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
-                    activeTab === "products"
-                      ? "bg-[#E1F5FF] text-[#00ABFB] "
-                      : "bg-white text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  Products
-                </button>
+                {/* Products tab: show if Product or Both */}
+                {(vendorProfile?.saasType === "Product" ||
+                  vendorProfile?.saasType === "Both") && (
+                  <button
+                    onClick={() => setActiveTab("products")}
+                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
+                      activeTab === "products"
+                        ? "bg-[#E1F5FF] text-[#00ABFB] "
+                        : "bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    Products
+                  </button>
+                )}
 
                 <button
                   onClick={() => setActiveTab("posts")}
@@ -446,16 +352,20 @@ export default function Home() {
                   Posts
                 </button>
 
-                <button
-                  onClick={() => setActiveTab("services")}
-                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
-                    activeTab === "services"
-                      ? "bg-[#E1F5FF] text-[#00ABFB] "
-                      : "bg-white text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  Services
-                </button>
+                {/* Services tab: show if Service or Both */}
+                {(vendorProfile?.saasType === "Service" ||
+                  vendorProfile?.saasType === "Both") && (
+                  <button
+                    onClick={() => setActiveTab("services")}
+                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
+                      activeTab === "services"
+                        ? "bg-[#E1F5FF] text-[#00ABFB] "
+                        : "bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    Services
+                  </button>
+                )}
 
                 <button
                   onClick={() => setActiveTab("queries")}
@@ -470,22 +380,48 @@ export default function Home() {
               </div>
 
               <div className="flex-shrink-0">
-                <button className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm">
+                <button
+                  className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm"
+                  onClick={() => navigate("/ProductListing")}
+                >
                   + Add
                 </button>
               </div>
             </div>
 
             {/* Search and Filter */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex-1 max-w-xl ">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex-1 max-w-xl relative">
                 <input
                   type="text"
                   placeholder="Search for Product/Post/Service"
-                  className="w-full bg-[#FFFFFF] text-gray-500 px-10 py-5  rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-[#FFFFFF] text-gray-500 px-10 py-5 rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12"
                 />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="28"
+                    height="28"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                    <path
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      d="M21 21l-4.35-4.35"
+                    />
+                  </svg>
+                </span>
               </div>
-              <div className="flex items-center gap-2 shadow bg-white rounded-full px-4 py-2">
+              <div className="flex items-center gap-4 shadow bg-white rounded-full px-4 py-2">
                 <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded">
                   Sort by <span>▼</span>
                 </button>
@@ -498,48 +434,49 @@ export default function Home() {
             </div>
 
             {/* Products Grid */}
-
             {activeTab === "products" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-sm">
-                {products.map((app, i) => (
-                  <div
-                    key={i}
-                    className=" rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
-                    style={{ backgroundColor: "#FAFAFA" }}
-                  >
-                    {/* colored rounded tile for app icon (matches screenshot) */}
-                    <div
-                      className={` w-12 h-12 rounded-3xl flex items-center justify-center mb-1`}
-                      style={{ minWidth: 96, minHeight: 96 }}
-                    >
-                      {app.isImage ? (
-                        <img
-                          src={app.icon}
-                          alt={app.name}
-                          className="w-20 h-20 object-cover"
-                          // style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.12))" }}
-                        />
-                      ) : (
-                        app.icon
-                      )}
-                    </div>
-
-                    <h3 className="font-semibold text-sm text-gray-900 mt-1">
-                      {app.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1 mb-1">
-                      {app.subtitle}
-                    </p>
-
-                    {/* centered rating */}
-                    <div className="mt-auto text-center">
-                      <span className="text-sm font-semibold">
-                        {app.rating}
-                      </span>
-                      <span className="text-yellow-500 text-sm ml-1">★</span>
-                    </div>
+                {productList.length === 0 ? (
+                  <div className="col-span-full text-center text-gray-400">
+                    No products found.
                   </div>
-                ))}
+                ) : (
+                  productList.map((product) => (
+                    <div
+                      key={product._id}
+                      className="rounded-3xl p-2 hover:shadow-xl transition-shadow flex flex-col items-center text-center min-h-[160px]"
+                      style={{ backgroundColor: "#FAFAFA" }}
+                    >
+                      {/* Product Display Icon */}
+                      <div
+                        className="w-12 h-12 rounded-3xl flex items-center justify-center mb-1"
+                        style={{ minWidth: 96, minHeight: 96 }}
+                      >
+                        {product.displayIcon ? (
+                          <img
+                            src={getFileUrl(product.displayIcon)}
+                            alt={product.productName}
+                            className="w-20 h-20 object-cover"
+                          />
+                        ) : (
+                          <span className="text-gray-400">No Icon</span>
+                        )}
+                      </div>
+                      {/* Product Name */}
+                      <h3 className="font-semibold text-sm text-gray-900 mt-1">
+                        {product.productName || (
+                          <span className="text-gray-400">No Name</span>
+                        )}
+                      </h3>
+                      {/* Category */}
+                      <p className="text-xs text-gray-500 mt-1 mb-1">
+                        {product.category || (
+                          <span className="text-gray-400">No Category</span>
+                        )}
+                      </p>
+                    </div>
+                  ))
+                )}
               </div>
             )}
           </div>
@@ -592,34 +529,7 @@ export default function Home() {
 
               {/* Activity Feed */}
               <div className="space-y-4">
-                {posts.map((post, index) => (
-                  <div key={index} className="border-t border-gray-200 pt-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-                      <div>
-                        <h4 className="font-semibold text-sm text-gray-900">
-                          {post.user}
-                        </h4>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-700 mb-2">
-                      {post.content}{" "}
-                      <span className="text-blue-600">{post.tag}</span>
-                    </p>
-                    <div className="bg-gray-200 rounded-xl h-32 mb-3"></div>
-                    <div className="flex items-center justify-between text-xs text-gray-600">
-                      <span className="flex items-center gap-1">
-                        👁 {post.stats.views}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        💬 {post.stats.comments}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        🔁 {post.stats.shares}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                <img src={figmaLogo} alt="" srcset="" />
               </div>
             </div>
 

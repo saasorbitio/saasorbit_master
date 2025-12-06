@@ -16,7 +16,18 @@ export const registerVendor = async (req, res) => {
   try {
     let companyLogo = req.body.companyLogo;
     if (req.file) {
-      companyLogo = req.file.path;
+      // Store file in GridFS
+      const { getGridFSBucket } = await import("../utils/gridfs.js");
+      const bucket = getGridFSBucket();
+      const uploadStream = bucket.openUploadStream(req.file.originalname, {
+        contentType: req.file.mimetype,
+      });
+      uploadStream.end(req.file.buffer);
+      await new Promise((resolve, reject) => {
+        uploadStream.on("finish", resolve);
+        uploadStream.on("error", reject);
+      });
+      companyLogo = uploadStream.id.toString();
     }
     const {
       role,
