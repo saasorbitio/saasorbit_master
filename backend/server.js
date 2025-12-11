@@ -1,6 +1,7 @@
-import dotenv from "dotenv";
+import "./config/loadEnv.js";
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import { initGridFS } from "./utils/gridfs.js";
@@ -9,8 +10,10 @@ import aiRoutes from "./routes/ai.js";
 import authRoutes from "./routes/authRoutes.js";
 import vendorRoutes from "./routes/vendorRoutes.js";
 import productListingRoutes from "./routes/productListing.js";
+import otpRoutes from "./routes/otpRoutes.js";
 
 dotenv.config();
+
 
 const app = express();
 connectDB().then(() => {
@@ -51,15 +54,30 @@ app.get("/file/:id", async (req, res) => {
 app.use(express.json());
 app.use(cookieParser());
 
+// Add logging middleware for debugging
+app.use((req, res, next) => {
+  console.log(`📝 ${req.method} ${req.path}`);
+  next();
+});
+
 // Routes
 
 app.use("/api/auth", authRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/ProductListing", productListingRoutes);
+app.use("/api", otpRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");
+});
+
+// Test endpoint
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "API is working",
+    routes: ["request-otp", "verify-otp"],
+  });
 });
 
 const PORT = process.env.PORT || 5001;

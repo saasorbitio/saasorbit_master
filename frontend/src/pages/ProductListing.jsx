@@ -1,36 +1,6 @@
-// Example price models, replace with your actual models as needed
-const priceModels = ["Free", "Subscription", "One-time", "Freemium", "Custom"];
-// Example integrations, replace with your actual integrations as needed
-const integrations = [
-  "Slack",
-  "Salesforce",
-  "Google Drive",
-  "Zapier",
-  "QuickBooks",
-  "Jira",
-];
-// Example recommended tags, replace with your actual tags as needed
-const recommendedTagsList = [
-  "Cloud",
-  "AI",
-  "Automation",
-  "Analytics",
-  "Collaboration",
-  "Security",
-  "Mobile",
-];
-// Example categories, replace with your actual categories as needed
-const categories = [
-  "HR",
-  "Finance",
-  "Productivity",
-  "Marketing",
-  "Sales",
-  "IT",
-  "Other",
-];
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// ...existing code...
 
 const initialState = {
   productName: "",
@@ -48,6 +18,74 @@ const initialState = {
 };
 
 export default function ProductListing() {
+  const [form, setForm] = useState(initialState);
+  const [errors, setErrors] = useState({});
+  const [tagInput, setTagInput] = useState("");
+  const navigate = useNavigate();
+
+  // Remove a tag from the tags array by index
+  const handleRemoveTag = (removeIdx) => {
+    setForm((prev) => {
+      const newTags = prev.tags.slice();
+      newTags.splice(removeIdx, 1);
+      return { ...prev, tags: newTags };
+    });
+  };
+
+  // Handle tag input key down (add tag on comma or Enter)
+  const handleTagInputKeyDown = (e) => {
+    if ((e.key === "," || e.key === "Enter") && tagInput.trim()) {
+      e.preventDefault();
+      const newTag = tagInput.replace(/,/g, "").trim();
+      if (newTag && !form.tags.includes(newTag)) {
+        setForm((prev) => ({ ...prev, tags: [...prev.tags, newTag] }));
+      }
+      setTagInput("");
+    }
+  };
+
+  // Handle tag input change
+  const handleTagInputChange = (e) => {
+    setTagInput(e.target.value);
+  };
+
+  // ...existing code (move all other handlers here as well)...
+  // Example price models, replace with your actual models as needed
+  const priceModels = [
+    "Free",
+    "In-App Purchase",
+    "Free Trail/In-App Purchase",
+  
+  ];
+  // Example integrations, replace with your actual integrations as needed
+  const integrations = [
+    "Slack",
+    "Salesforce",
+    "Google Drive",
+    "Zapier",
+    "QuickBooks",
+    "Jira",
+  ];
+  // Example recommended tags, replace with your actual tags as needed
+  const recommendedTagsList = [
+    "Cloud",
+    "AI",
+    "Automation",
+    "Analytics",
+    "Collaboration",
+    "Security",
+    "Mobile",
+  ];
+  // Example categories, replace with your actual categories as needed
+  const categories = [
+    "HR",
+    "Finance",
+    "Productivity",
+    "Marketing",
+    "Sales",
+    "IT",
+    "Other",
+  ];
   // Set the selected price model
   const handlePriceModelChange = (model) => {
     setForm((prev) => ({
@@ -93,9 +131,6 @@ export default function ProductListing() {
       }));
     }
   };
-  const navigate = useNavigate();
-  const [form, setForm] = useState(initialState);
-  const [errors, setErrors] = useState({});
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -141,9 +176,12 @@ export default function ProductListing() {
     >
       {/* Left: Form fields */}
       <div className="bg-white rounded-2xl shadow p-8 col-span-2 flex flex-col gap-6">
-        <h2 className="text-xl font-semibold mb-2 text-center text-[#2E2E2E]">
-          Product Listing
-        </h2>
+        <div className="text-center ">
+          <span className="text-md bg-[#F6F6F6] px-3 py-3  rounded-3xl font-semibold mb-2 text-center text-[#2E2E2E]">
+            Product Listing
+          </span>
+        </div>
+
         {/* Product Name */}
         <div>
           <label className="block text-sm text-[#5A5A5A] font-medium mb-1">
@@ -154,8 +192,8 @@ export default function ProductListing() {
             name="productName"
             value={form.productName}
             onChange={handleChange}
-            className={`w-full px-4 py-4 bg-[#EEEEEE]  border-0 rounded-4xl ${
-              errors.productName ? "border-red-500" : "border-gray-300"
+            className={`w-full px-4 py-4 bg-[#FBFBFB] border border-[1px] border-[#EEEEEE] rounded-4xl focus:outline-none ${
+              errors.productName ? "border-red-500" : "border-[#EEEEEE]"
             }`}
             placeholder="Product Name"
           />
@@ -168,21 +206,40 @@ export default function ProductListing() {
           <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
             Category*
           </label>
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className={`w-full px-4 py-4 bg-[#EEEEEE]   border-0 rounded-4xl ${
-              errors.category ? "border-red-500" : "border-gray-300"
-            }`}
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+              className={`w-full px-4 py-4 pr-12 bg-[#FBFBFB] border border-[1px] border-[#EEEEEE] rounded-4xl appearance-none focus:outline-none ${
+                errors.category ? "border-red-500" : "border-[#EEEEEE]"
+              }`}
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            {/* Custom dropdown arrow */}
+            <span className="pointer-events-none absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <svg
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </span>
+          </div>
           {errors.category && (
             <p className="text-red-500 text-xs mt-1">{errors.category}</p>
           )}
@@ -192,17 +249,35 @@ export default function ProductListing() {
           <label className="block text-sm  font-medium mb-1">
             Use Case Tags
           </label>
-          <input
-            type="text"
-            name="tags"
-            value={Array.isArray(form.tags) ? form.tags.join(", ") : ""}
-            onChange={(e) =>
-              handleTagChange(e.target.value.split(",").map((t) => t.trim()))
-            }
-            className="w-full px-4 py-4 bg-[#EEEEEE] border-none  rounded-4xl"
-            placeholder="HRMS, HR, X"
-          />
+          <div className="w-full px-4 py-2 bg-[#FBFBFB] border border-[#EEEEEE] rounded-4xl flex flex-wrap gap-2 min-h-[56px] items-center">
+            {form.tags.map((tag, idx) => (
+              <span
+                key={tag + idx}
+                className="flex items-center bg-[#EEEEEE] text-black rounded-full px-3 py-2 text-sm mr-2 mb-1 cursor-pointer"
+              >
+                {tag}
+                <button
+                  type="button"
+                  className="ml-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                  onClick={() => handleRemoveTag(idx)}
+                  aria-label={`Remove tag ${tag}`}
+                >
+                  &times;
+                </button>
+              </span>
+            ))}
+            <input
+              type="text"
+              name="tagInput"
+              value={tagInput}
+              onChange={handleTagInputChange}
+              onKeyDown={handleTagInputKeyDown}
+              className="flex-1 min-w-[120px] border-none bg-transparent focus:outline-none py-2"
+              placeholder={form.tags.length === 0 ? "HRMS, HR, X" : "Add tag"}
+            />
+          </div>
         </div>
+
         {/* Recommended Tags */}
         <div>
           <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
@@ -213,7 +288,7 @@ export default function ProductListing() {
               <button
                 type="button"
                 key={tag}
-                className="bg-[#ECECEC] text-gray-600 rounded-4xl px-6 py-2 text-base font-medium flex items-center gap-2  transition"
+                className="bg-[#EEEEEE] border-0  text-[#000000] rounded-4xl px-6 py-2 text-base font-medium flex items-center gap-2  transition cursor-pointer"
                 onClick={() => handleAddRecommendedTag(tag)}
                 disabled={form.tags.includes(tag)}
               >
@@ -227,7 +302,7 @@ export default function ProductListing() {
           <label className="block text-sm  text-[#5A5A5A] font-medium mb-1">
             Key Features*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#EEEEEE]">
+          <div className="border border-[#EEEEEE] rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#FBFBFB]">
             <input
               type="file"
               name="keyFeaturesFile"
@@ -259,9 +334,9 @@ export default function ProductListing() {
               <button
                 type="button"
                 key={integration}
-                className={`px-5 py-3 text-[#ECECEC] rounded-full text-sm font-medium border-none ${
+                className={`px-5 py-3 text-[#ECECEC] rounded-full text-sm font-medium border-none  cursor-pointer ${
                   form.integration.includes(integration)
-                    ? "bg-blue-500 text-white"
+                    ? "bg-[#00ABFB] text-white"
                     : "bg-gray-100 text-gray-700"
                 }`}
                 onClick={() => handleIntegrationChange(integration)}
@@ -301,8 +376,8 @@ export default function ProductListing() {
             name="documentationUrl"
             value={form.documentationUrl}
             onChange={handleChange}
-            className={`w-full px-4 py-4 bg-[#EEEEEE] border-none  rounded-4xl ${
-              errors.documentationUrl ? "border-red-500" : "border-gray-300"
+            className={`w-full px-4 py-4 pr-12 bg-[#FBFBFB] border border-[1px] border-[#EEEEEE] rounded-4xl appearance-none focus:outline-none ${
+              errors.category ? "border-red-500" : "border-[#EEEEEE]"
             }`}
             placeholder="URL"
           />
@@ -317,7 +392,7 @@ export default function ProductListing() {
           <label className="block   text-[#5A5A5A] text-sm font-medium mb-1">
             Release Notes*
           </label>
-          <div className="border rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#EEEEEE]">
+          <div className="border border-[#EEEEEE] rounded-xl w-full h-24 flex items-center justify-center text-gray-400 relative bg-[#FBFBFB]">
             <input
               type="file"
               name="releaseNotesFile"
@@ -346,7 +421,7 @@ export default function ProductListing() {
           <label className="block text-sm font-medium mb-1">
             Product Display Icon*
           </label>
-          <div className="border-none rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#EEEEEE] ">
+          <div className="border border-[#EEEEEE] rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#FBFBFB] ">
             <input
               type="file"
               name="displayIcon"
@@ -372,7 +447,7 @@ export default function ProductListing() {
           <label className="block text-sm font-medium mb-1">
             Product Screenshots*
           </label>
-          <div className="border-none rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#EEEEEE] ">
+          <div className="border border-[#EEEEEE] rounded-xl w-full h-24 flex items-center justify-center text-gray-400 bg-[#FBFBFB] ">
             <input
               type="file"
               name="screenshots"
@@ -398,7 +473,7 @@ export default function ProductListing() {
           <label className="block text-sm font-medium mb-1">
             Your Application Preview
           </label>
-          <div className="bg-[#F5F7FB] rounded-xl p-4 flex items-center gap-4">
+          <div className="bg-[#FBFBFB] rounded-xl p-4 flex items-center gap-4">
             <div className="w-16 h-16 bg-[#FFFFFF] rounded-xl flex items-center justify-center overflow-hidden">
               {/* Show uploaded Product Display Icon if available, else fallback */}
               {form.displayIcon ? (
@@ -425,13 +500,13 @@ export default function ProductListing() {
         </div>
         <button
           type="submit"
-          className="w-full py-3 bg-[#00ABFB] text-white rounded-full font-semibold text-md mt-3"
+          className="w-full py-3 bg-[#00ABFB] text-white rounded-full font-semibold text-md mt-3 cursor-pointer "
         >
           Add Product
         </button>
         <button
           type="button"
-          className="w-full py-3 bg-transparent hover:bg-gray-100 text-gray-400 rounded-full font-semibold text-md mt-2"
+          className="w-full py-3 bg-transparent hover:bg-gray-100 text-gray-400 rounded-full font-semibold text-md mt-2 cursor-pointer "
           onClick={() => setForm(initialState)}
         >
           Discard

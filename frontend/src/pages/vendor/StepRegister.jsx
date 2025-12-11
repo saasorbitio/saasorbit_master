@@ -1,12 +1,26 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { useVendorForm } from "../../context/VendorFormContext";
 
 export default function StepRegister({ next, back }) {
   const { formData, updateMultipleFields } = useVendorForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Email is required")
+      .test(
+        "company-domain",
+        "Please use your company domain email ",
+        (value) => {
+          if (!value) return false;
+          // Reject gmail.com addresses
+          return !/^[^@\s]+@gmail\.com$/i.test(value);
+        }
+      ),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
@@ -37,12 +51,41 @@ export default function StepRegister({ next, back }) {
         }}
         enableReinitialize={true}
         validationSchema={schema}
-        onSubmit={(values) => {
-          updateMultipleFields({
-            email: values.email,
-            password: values.password,
-          });
-          next();
+        onSubmit={async (values) => {
+          setIsLoading(true);
+
+          try {
+            // Send OTP request
+            const response = await fetch(
+              "http://localhost:5001/api/request-otp",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: values.email }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.message || "Failed to send OTP");
+            }
+
+            // Update form data and proceed to OTP verification
+            updateMultipleFields({
+              email: values.email,
+              password: values.password,
+            });
+
+            toast.success("OTP sent to your email!");
+            next();
+          } catch (error) {
+            toast.error(
+              error.message || "Failed to send OTP. Please try again."
+            );
+          } finally {
+            setIsLoading(false);
+          }
         }}
       >
         {({ errors, touched }) => (
@@ -124,9 +167,10 @@ export default function StepRegister({ next, back }) {
 
               <button
                 type="submit"
-                className="flex-1 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+                disabled={isLoading}
+                className="flex-1 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
               >
-                Proceed
+                {isLoading ? "Sending OTP..." : "Proceed"}
               </button>
             </div>
           </Form>

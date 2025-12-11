@@ -243,7 +243,7 @@ export default function Sections() {
           <h2 className="text-xl font-normal text-gray-900">
             Top Tech Companies
           </h2>
-          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full cursor-pointer">
             View All
           </button>
         </div>
@@ -296,7 +296,7 @@ export default function Sections() {
           <h2 className="text-xl font-normal text-gray-900">
             Productive Applications
           </h2>
-          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full cursor-pointer">
             View All
           </button>
         </div>
@@ -343,7 +343,7 @@ export default function Sections() {
       <div className="bg-white p-8 rounded-2xl">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-normal text-gray-900">Top Paid Apps</h2>
-          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
+          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full cursor-pointer">
             View All
           </button>
         </div>
@@ -423,13 +423,13 @@ export default function Sections() {
         {/* right aligned buttons — compact, pill-shaped, vertical center aligned */}
         <div className="flex gap-3 items-center justify-center relative z-10 w-1/2">
           <button
-            className="px-10 sm:px-12 py-4 rounded-full border bg-transparent text-white text-lg font-normal hover:bg-white/10 transition-colors"
+            className="px-10 sm:px-12 py-4 rounded-full border bg-transparent text-white text-lg font-normal hover:bg-white/10 transition-colors cursor-pointer"
             style={{ borderColor: "#00ABFB" }}
           >
             Know More
           </button>
           <button
-            className="px-10 sm:px-12 py-4 rounded-full bg-white text-lg font-normal shadow-md hover:scale-[1.02] transition-transform"
+            className="px-10 sm:px-12 py-4 rounded-full bg-white text-lg font-normal shadow-md hover:scale-[1.02] transition-transform cursor-pointer"
             style={{ color: "#00ABFB" }}
           >
             Register
@@ -498,7 +498,7 @@ export default function Sections() {
           <h2 className="text-xl font-semibold text-gray-900">
             Popular Categories
           </h2>
-          <button className="text-sm bg-[#00ABFB] text-white font-medium hover:underline px-4 py-2 rounded-full">
+          <button className="text-sm bg-[#00ABFB] text-white cursor-pointer font-medium hover:underline px-4 py-2 rounded-full">
             View All
           </button>
         </div>
@@ -508,7 +508,7 @@ export default function Sections() {
               key={i}
               className={`group relative ${
                 category.bgColor
-              } rounded-2xl p-4 shadow-md hover:shadow-xl transition-all flex flex-col justify-between h-40${
+              } rounded-2xl p-4 shadow-md hover:shadow-xl transition-all flex flex-col justify-between cursor-pointer  h-40${
                 category.border ? " border-1" : ""
               }`}
               style={{

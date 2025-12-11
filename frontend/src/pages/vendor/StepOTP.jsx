@@ -30,33 +30,45 @@ export default function StepOTP({ next, back }) {
 
   const handleVerify = () => {
     const enteredOtp = otp.join("");
-
     if (enteredOtp.length !== 6) {
       toast.error("Please enter complete OTP");
       return;
     }
-
     setIsVerifying(true);
-
-    // Verify OTP (static verification for now)
-    if (enteredOtp === "000555") {
-      setTimeout(() => {
+    fetch("http://localhost:5001/api/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.email, otp: enteredOtp }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
         toast.success("OTP verified successfully!");
         setIsVerifying(false);
         next();
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        toast.error("Invalid OTP. Please use 000555");
+      })
+      .catch((err) => {
+        toast.error(err.message || "Invalid OTP");
         setIsVerifying(false);
-      }, 1000);
-    }
+      });
   };
 
   const handleResend = () => {
-    toast.info("OTP resent to your email");
-    setOtp(["", "", "", "", "", ""]);
-    document.getElementById("otp-0")?.focus();
+    fetch("http://localhost:5001/api/request-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: formData.email }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message);
+        toast.info("OTP resent to your email");
+        setOtp(["", "", "", "", "", ""]);
+        document.getElementById("otp-0")?.focus();
+      })
+      .catch((err) => {
+        toast.error(err.message || "Failed to resend OTP");
+      });
   };
 
   return (

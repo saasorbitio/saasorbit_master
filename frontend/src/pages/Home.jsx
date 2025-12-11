@@ -162,7 +162,7 @@ export default function Home() {
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+            <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm cursor-pointer">
               Chat with Us
             </button>
             {/* <div className="flex items-center gap-2">
@@ -300,7 +300,7 @@ export default function Home() {
             <div className="bg-white rounded-2xl p-8 shadow-sm">
               {/* Top row: Edit button absolutely positioned at top right, logo/name below */}
               <div className="relative mb-5">
-                <button className="absolute top-0 right-0 px-6 py-2 text-[#5A5A5A] bg-[#FAFAFA] rounded-2xl">
+                <button className="absolute top-0 right-0 px-6 py-2 text-[#5A5A5A] bg-[#FAFAFA] rounded-2xl cursor-pointer">
                   Edit
                 </button>
                 <div className="flex items-center gap-4 min-w-0 pt-2">
@@ -331,7 +331,7 @@ export default function Home() {
                   vendorProfile?.saasType === "Both") && (
                   <button
                     onClick={() => setActiveTab("products")}
-                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                       activeTab === "products"
                         ? "bg-[#E1F5FF] text-[#00ABFB] "
                         : "bg-white text-gray-600 hover:bg-gray-50"
@@ -343,7 +343,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("posts")}
-                  className={`px-10 py-4  rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4  rounded-full text-sm font-medium transition-colors cursor-pointer ${
                     activeTab === "posts"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -357,7 +357,7 @@ export default function Home() {
                   vendorProfile?.saasType === "Both") && (
                   <button
                     onClick={() => setActiveTab("services")}
-                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                       activeTab === "services"
                         ? "bg-[#E1F5FF] text-[#00ABFB] "
                         : "bg-white text-gray-600 hover:bg-gray-50"
@@ -369,7 +369,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("queries")}
-                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                     activeTab === "queries"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -381,7 +381,7 @@ export default function Home() {
 
               <div className="flex-shrink-0">
                 <button
-                  className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm"
+                  className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm cursor-pointer"
                   onClick={() => navigate("/ProductListing")}
                 >
                   + Add
@@ -421,13 +421,13 @@ export default function Home() {
                   </svg>
                 </span>
               </div>
-              <div className="flex items-center gap-4 shadow bg-white rounded-full px-4 py-2">
-                <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded">
+              <div className="flex items-center gap-4 shadow bg-white rounded-full px-4 py-3 ">
+                <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded cursor-pointer">
                   Sort by <span>▼</span>
                 </button>
                 <div className="w-px h-6 bg-gray-300"></div>{" "}
                 {/* Vertical separator */}
-                <button className="flex items-center gap-1 text-gray-700  px-2 py-1 rounded">
+                <button className="flex items-center gap-1 text-gray-700  px-2 py-1 rounded cursor-pointer">
                   Filter <span>▼</span>
                 </button>
               </div>
