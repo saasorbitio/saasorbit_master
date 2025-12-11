@@ -16,6 +16,30 @@ const cpUpload = upload.fields([
   { name: "releaseNotesFile", maxCount: 1 },
 ]);
 
+/**
+ * @swagger
+ * /api/ProductListing:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of all products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Server error
+ */
 // GET /api/ProductListing
 router.get("/", async (req, res) => {
   try {
@@ -26,6 +50,79 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/ProductListing:
+ *   post:
+ *     summary: Create a new product listing
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - productName
+ *               - category
+ *               - userId
+ *             properties:
+ *               productName:
+ *                 type: string
+ *                 example: Project Management Pro
+ *               category:
+ *                 type: string
+ *                 example: Project Management
+ *               documentationUrl:
+ *                 type: string
+ *                 format: uri
+ *                 example: https://docs.example.com
+ *               priceModel:
+ *                 type: string
+ *                 example: Subscription
+ *               tags:
+ *                 type: string
+ *                 description: JSON stringified array of tags
+ *                 example: '["productivity", "collaboration"]'
+ *               integration:
+ *                 type: string
+ *                 description: JSON stringified array of integrations
+ *                 example: '["slack", "jira"]'
+ *               userId:
+ *                 type: string
+ *                 example: 507f1f77bcf86cd799439011
+ *               displayIcon:
+ *                 type: string
+ *                 format: binary
+ *                 description: Product display icon
+ *               screenshots:
+ *                 type: string
+ *                 format: binary
+ *                 description: Product screenshots
+ *               keyFeaturesFile:
+ *                 type: string
+ *                 format: binary
+ *                 description: Key features document
+ *               releaseNotesFile:
+ *                 type: string
+ *                 format: binary
+ *                 description: Release notes document
+ *     responses:
+ *       201:
+ *         description: Product created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 product:
+ *                   $ref: '#/components/schemas/Product'
+ *       500:
+ *         description: Server error
+ */
 // POST /api/ProductListing
 router.post("/", cpUpload, async (req, res) => {
   try {

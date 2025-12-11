@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import Otp from "../models/Otp.js";
+import Vendor from "../models/Vendor.js";
 import transporter, { mailFrom } from "../config/email.js";
 import { generateOtp, isCompanyEmail } from "../utils/otp.js";
 
@@ -12,6 +13,14 @@ export const requestOtp = async (req, res) => {
       return res.status(400).json({
         message: "Only company domain emails are allowed.",
       });
+
+    // Check if email already exists in Vendor collection
+    const existingVendor = await Vendor.findOne({ email });
+    if (existingVendor) {
+      return res.status(400).json({
+        message: "Email already registered. Please login instead.",
+      });
+    }
 
     // Throttle resend: 60 seconds
     const existing = await Otp.findOne({ email });

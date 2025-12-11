@@ -2,11 +2,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { useVendorForm } from "../../context/VendorFormContext";
 
 export default function StepRegister({ next, back }) {
   const { formData, updateMultipleFields } = useVendorForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoginButton, setShowLoginButton] = useState(false);
+  const navigate = useNavigate();
 
   const schema = Yup.object({
     email: Yup.string()
@@ -53,6 +56,7 @@ export default function StepRegister({ next, back }) {
         validationSchema={schema}
         onSubmit={async (values) => {
           setIsLoading(true);
+          setShowLoginButton(false); // Reset the state on new submit
 
           try {
             // Send OTP request
@@ -68,7 +72,17 @@ export default function StepRegister({ next, back }) {
             const data = await response.json();
 
             if (!response.ok) {
-              throw new Error(data.message || "Failed to send OTP");
+              // Check if it's the "email already registered" error
+              if (
+                data.message ===
+                "Email already registered. Please login instead."
+              ) {
+                setShowLoginButton(true);
+              }
+              // Show specific error message from backend
+              toast.error(data.message || "Failed to send OTP");
+              setIsLoading(false);
+              return;
             }
 
             // Update form data and proceed to OTP verification
@@ -173,6 +187,19 @@ export default function StepRegister({ next, back }) {
                 {isLoading ? "Sending OTP..." : "Proceed"}
               </button>
             </div>
+
+            {/* Back to Login Link - Only show when email already exists */}
+            {showLoginButton && (
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  onClick={() => navigate("/")}
+                  className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
+                >
+                  ← Back to Login
+                </button>
+              </div>
+            )}
           </Form>
         )}
       </Formik>

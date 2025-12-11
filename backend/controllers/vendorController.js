@@ -314,3 +314,60 @@ export const updateVendorProfile = async (req, res) => {
     res.status(500).json({ message: "Server error while updating profile" });
   }
 };
+
+// DELETE /api/vendor/delete-by-email
+export const deleteVendorByEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate email is provided
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Find and delete vendor by email
+    const vendor = await Vendor.findOneAndDelete({ email });
+
+    if (!vendor) {
+      return res.status(404).json({
+        success: false,
+        message: `No vendor found with email: ${email}`,
+      });
+    }
+
+    // If vendor had a company logo in GridFS, optionally delete it
+    if (vendor.companyLogo) {
+      try {
+        const { getGridFSBucket } = await import("../utils/gridfs.js");
+        const bucket = getGridFSBucket();
+        const mongoose = await import("mongoose");
+        await bucket.delete(
+          new mongoose.default.Types.ObjectId(vendor.companyLogo)
+        );
+      } catch (fileErr) {
+        console.error("Error deleting company logo from GridFS:", fileErr);
+        // Continue even if file deletion fails
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Vendor with email ${email} has been successfully deleted`,
+      deletedVendor: {
+        email: vendor.email,
+        companyName: vendor.companyName,
+        _id: vendor._id,
+      },
+    });
+  } catch (err) {
+    console.error("Delete vendor by email error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting vendor",
+      error: err.message,
+    });
+  }
+};

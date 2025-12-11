@@ -13,6 +13,51 @@ function getOpenAIClient() {
   return openaiClient;
 }
 
+/**
+ * @swagger
+ * /api/ai/chat:
+ *   post:
+ *     summary: Send a message to the AI chatbot
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - message
+ *               - userId
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: What are the best SaaS tools for project management?
+ *               userId:
+ *                 type: string
+ *                 example: 507f1f77bcf86cd799439011
+ *     responses:
+ *       200:
+ *         description: AI response generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 reply:
+ *                   type: string
+ *                   example: Here are some popular SaaS tools for project management...
+ *       400:
+ *         description: Bad request - Missing userId
+ *       429:
+ *         description: AI service quota exceeded
+ *       503:
+ *         description: AI service not configured
+ *       500:
+ *         description: Server error
+ */
 router.post("/chat", async (req, res) => {
   const { message, userId } = req.body;
 

@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import { initGridFS } from "./utils/gridfs.js";
 import mongoose from "mongoose";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
 import aiRoutes from "./routes/ai.js";
 import authRoutes from "./routes/authRoutes.js";
 import vendorRoutes from "./routes/vendorRoutes.js";
@@ -13,7 +15,6 @@ import productListingRoutes from "./routes/productListing.js";
 import otpRoutes from "./routes/otpRoutes.js";
 
 dotenv.config();
-
 
 const app = express();
 connectDB().then(() => {
@@ -62,6 +63,22 @@ app.use((req, res, next) => {
 
 // Routes
 
+// Swagger UI
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "SaaSOrbit API Documentation",
+  })
+);
+
+// Swagger JSON endpoint
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/ai", aiRoutes);
@@ -69,7 +86,19 @@ app.use("/api/ProductListing", productListingRoutes);
 app.use("/api", otpRoutes);
 
 app.get("/", (req, res) => {
-  res.send("API running...");
+  res.json({
+    message: "🚀 SaaSOrbit API is running",
+    documentation: `http://localhost:${process.env.PORT || 5001}/api-docs`,
+    endpoints: {
+      swagger: "/api-docs",
+      swaggerJson: "/api-docs.json",
+      auth: "/api/auth",
+      vendor: "/api/vendor",
+      ai: "/api/ai",
+      products: "/api/ProductListing",
+      otp: "/api",
+    },
+  });
 });
 
 // Test endpoint
