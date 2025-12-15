@@ -157,13 +157,40 @@ export default function Home() {
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={logo} alt="SaasOrbit Logo" className="h-12" />
+            {/* responsive heights: smaller on xs, larger on md */}
+            <img
+              src={logo}
+              alt="SaasOrbit Logo"
+              className="h-12 sm:h-14 md:h-16"
+            />
           </div>
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <button className="px-6 py-2 rounded-3xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm cursor-pointer">
-              Chat with Us
+            <button
+              className="flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-2 rounded-3xl bg-blue-500 text-white text-sm sm:text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm cursor-pointer"
+              aria-label="Chat with us"
+            >
+              {/* Chat icon (visible on all sizes) */}
+              {/* <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.874L3 20l1.874-4.745A9.863 9.863 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
+          </svg> */}
+
+              {/* Full label on small screens and up; short label on xs */}
+              <span className="hidden sm:inline">Chat with Us</span>
+              <span className="sm:hidden">Chat</span>
             </button>
             {/* <div className="flex items-center gap-2">
               <span className="text-sm text-gray-700 font-medium">Ind</span>
@@ -324,14 +351,15 @@ export default function Home() {
             </div>
 
             {/* Tabs with saasType condition */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex gap-2 items-center">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-3">
+              <div className="flex gap-2 items-center overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-3 sm:mx-0 px-3 sm:px-0">
+                {/* make buttons not shrink and horizontally scrollable on xs */}
                 {/* Products tab: show if Product or Both */}
                 {(vendorProfile?.saasType === "Product" ||
                   vendorProfile?.saasType === "Both") && (
                   <button
                     onClick={() => setActiveTab("products")}
-                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                    className={`flex-shrink-0 whitespace-nowrap px-4 py-2 sm:px-10 sm:py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                       activeTab === "products"
                         ? "bg-[#E1F5FF] text-[#00ABFB] "
                         : "bg-white text-gray-600 hover:bg-gray-50"
@@ -343,7 +371,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("posts")}
-                  className={`px-10 py-4  rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                  className={`flex-shrink-0 whitespace-nowrap px-4 py-2 sm:px-10 sm:py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                     activeTab === "posts"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -357,7 +385,7 @@ export default function Home() {
                   vendorProfile?.saasType === "Both") && (
                   <button
                     onClick={() => setActiveTab("services")}
-                    className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                    className={`flex-shrink-0 whitespace-nowrap px-4 py-2 sm:px-10 sm:py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                       activeTab === "services"
                         ? "bg-[#E1F5FF] text-[#00ABFB] "
                         : "bg-white text-gray-600 hover:bg-gray-50"
@@ -369,7 +397,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab("queries")}
-                  className={`px-10 py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                  className={`flex-shrink-0 whitespace-nowrap px-4 py-2 sm:px-10 sm:py-4 rounded-full text-sm font-medium transition-colors cursor-pointer ${
                     activeTab === "queries"
                       ? "bg-[#E1F5FF] text-[#00ABFB] "
                       : "bg-white text-gray-600 hover:bg-gray-50"
@@ -379,9 +407,9 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 w-full sm:w-auto">
                 <button
-                  className="px-14 py-1 h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm cursor-pointer"
+                  className="w-full sm:w-auto px-6 sm:px-14 py-2 h-12 sm:h-14 bg-[#00ABFB] text-[#FFFFFF] rounded-full text-sm transition-colors shadow-sm cursor-pointer"
                   onClick={() => navigate("/ProductListing")}
                 >
                   + Add
@@ -389,13 +417,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Search and Filter */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex-1 max-w-xl relative">
+            {/* Search and Filter - responsive: stack on xs, inline on sm+ */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-2">
+              <div className="w-full sm:flex-1 max-w-full sm:max-w-xl relative">
                 <input
                   type="text"
                   placeholder="Search for Product/Post/Service"
-                  className="w-full bg-[#FFFFFF] text-gray-500 px-10 py-5 rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12"
+                  className="w-full bg-[#FFFFFF] text-gray-500 px-4 py-3 sm:px-10 sm:py-5 rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                   <svg
@@ -421,14 +449,15 @@ export default function Home() {
                   </svg>
                 </span>
               </div>
-              <div className="flex items-center gap-4 shadow bg-white rounded-full px-4 py-3 ">
-                <button className="flex items-center gap-1 text-gray-700 px-2 py-1 rounded cursor-pointer">
-                  Sort by <span>▼</span>
+
+              <div className="flex items-center gap-3 shadow bg-white rounded-full px-3 py-2 sm:px-4 sm:py-3 w-full sm:w-auto">
+                <button className="flex-1 sm:flex-none flex items-center justify-center gap-1 text-gray-700 px-3 py-2 sm:px-2 sm:py-1 rounded-full text-sm">
+                  Sort by <span className="ml-1">▼</span>
                 </button>
-                <div className="w-px h-6 bg-gray-300"></div>{" "}
-                {/* Vertical separator */}
-                <button className="flex items-center gap-1 text-gray-700  px-2 py-1 rounded cursor-pointer">
-                  Filter <span>▼</span>
+                <div className="hidden sm:block w-px h-6 bg-gray-300"></div>{" "}
+                {/* Vertical separator (hidden on xs) */}
+                <button className="flex-1 sm:flex-none flex items-center justify-center gap-1 text-gray-700 px-3 py-2 sm:px-2 sm:py-1 rounded-full text-sm">
+                  Filter <span className="ml-1">▼</span>
                 </button>
               </div>
             </div>
