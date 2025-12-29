@@ -3,7 +3,9 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/postcss";
 
 export default defineConfig({
-  base: "/",
+  // When deploying the frontend under a sub-path (e.g. https://saasorbit.io/vendor/)
+  // set the base to that path so built asset URLs become /vendor/assets/...
+  base: "/vendor/",
   plugins: [react()],
   css: {
     postcss: {
